@@ -1,6 +1,7 @@
 package com.cjburkey.monopoly;
 
 import com.cjburkey.monopoly.gameloop.MainLoop;
+import com.cjburkey.monopoly.handler.MouseHandler;
 import com.cjburkey.monopoly.state.GameStateManager;
 import com.cjburkey.monopoly.util.Logger;
 import com.cjburkey.monopoly.window.GameScene;
@@ -43,6 +44,7 @@ public class Monopoly extends Application {
 	}
 	
 	public static final void tick(float delta) {
+		getWindow().getScene().setCursor(MouseHandler.getCursor(MouseHandler.cursor));
 		getStateManager().tick(delta);
 	}
 	
@@ -56,9 +58,11 @@ public class Monopoly extends Application {
 		
 		gc.setFill(Color.WHITE);
 		gc.setStroke(Color.WHITE);
-		gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		gc.fillRect(-100, -100, canvas.getWidth() + 100, canvas.getHeight() + 100);
 		
+		gc.translate(canvas.getWidth() / 2, canvas.getHeight() / 2);
 		getStateManager().render(delta, gc);
+		gc.translate(-(canvas.getWidth() / 2), -(canvas.getHeight() / 2));
 	}
 	
 	public static final void log(Object msg) { logger.log("" + msg); }

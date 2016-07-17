@@ -1,7 +1,6 @@
 package com.cjburkey.monopoly.window;
 
 import com.cjburkey.monopoly.Monopoly;
-import com.cjburkey.monopoly.handler.EventHandler;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -35,7 +34,7 @@ public class GameWindow {
 		this.getStage().setResizable(false);
 		Monopoly.log("Disabled GameWindow's Resizability.");
 		
-		this.getStage().setTitle("Monopoly");
+		this.getStage().setTitle("jNopoly");
 		Monopoly.log("Set GameWindow's title.");
 		
 		this.getStage().show();
@@ -43,7 +42,6 @@ public class GameWindow {
 		
 		this.getStage().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, e -> {
 			e.consume();
-			EventHandler.triggerEvent("onCloseRequest");
 			Monopoly.closeGame();
 			this.getStage().close();
 		});

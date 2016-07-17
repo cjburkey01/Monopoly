@@ -3,6 +3,7 @@ package com.cjburkey.monopoly.state;
 import java.util.ArrayList;
 import java.util.List;
 import com.cjburkey.monopoly.Monopoly;
+import com.cjburkey.monopoly.object.GameObject;
 import javafx.scene.canvas.GraphicsContext;
 
 public class GameStateManager {
@@ -16,6 +17,8 @@ public class GameStateManager {
 		
 		addGameState(mainMenu);
 		addGameState(mainGame);
+		
+		GameObject.initObjs();
 		
 		setGameState(mainGame);
 	}
