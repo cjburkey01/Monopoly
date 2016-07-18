@@ -1,6 +1,5 @@
 package com.cjburkey.monopoly.object.objects;
 
-import com.cjburkey.monopoly.Monopoly;
 import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import javafx.geometry.Point2D;
@@ -23,9 +22,9 @@ public class GameObjectGameBoard extends GameObject {
 		inst.position = new Point2D(-this.getSize().getX() / 2, -this.getSize().getY() / 2);
 	}
 	
-	public void perSecond(int fps, ObjectInstance inst) {
+	/*public void perSecond(int fps, ObjectInstance inst) {
 		Monopoly.log(fps + " FPS");
-	}
+	}*/
 	
 	public void render(float delta, GraphicsContext gc, ObjectInstance inst) {
 		Rectangle2D pos = new Rectangle2D(inst.getPosition().getX(), inst.getPosition().getY(), this.getSize().getX(), this.getSize().getY());

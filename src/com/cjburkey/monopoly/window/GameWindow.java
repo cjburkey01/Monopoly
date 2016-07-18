@@ -7,17 +7,12 @@ import javafx.stage.WindowEvent;
 
 public class GameWindow {
 	
-	private static boolean init = false;
-	
 	private GameScene gameScene;
 	private Stage gameStage;
 	
-	public GameWindow(Stage s) {
-		if(init) return;
-		init = true;
-		
+	public GameWindow(Stage s, double width, double height) {
 		VBox root = new VBox();
-		this.gameScene = new GameScene(root);
+		this.gameScene = new GameScene(root, width, height);
 		this.gameStage = s;
 	}
 	
@@ -31,7 +26,7 @@ public class GameWindow {
 		this.getStage().centerOnScreen();
 		Monopoly.log("Centered GameWindow.");
 		
-		this.getStage().setResizable(false);
+		this.getStage().setResizable(true);
 		Monopoly.log("Disabled GameWindow's Resizability.");
 		
 		this.getStage().setTitle("jNopoly");

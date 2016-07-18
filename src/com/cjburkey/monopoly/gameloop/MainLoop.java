@@ -8,6 +8,7 @@ public class MainLoop {
 	
 	private static boolean init = false;
 	private boolean running = false;
+	private boolean killGameToo = false;
 	
 	public static final double GAME_HERTZ = 30.0d;
 	public static final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
@@ -96,7 +97,7 @@ public class MainLoop {
 		}
 
 		Monopoly.log("Closing.");
-		Platform.exit();
+		if(this.killGameToo) Platform.exit();
 	}
 	
 	public void updateGame(float delta) {
@@ -112,8 +113,9 @@ public class MainLoop {
 		Monopoly.render(delta);
 	}
 	
-	public void stop() {
+	public void stop(boolean killGameToo) {
 		this.running = false;
+		this.killGameToo = killGameToo;
 	}
 	
 	public boolean isRunning() {

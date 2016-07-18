@@ -1,11 +1,9 @@
 package com.cjburkey.monopoly.window;
 
 import com.cjburkey.monopoly.Monopoly;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 
 public class GameScene extends Scene {
 
@@ -13,15 +11,14 @@ public class GameScene extends Scene {
 	
 	private Canvas gameDrawing;
 	private VBox root;
-	private Rectangle2D size = Screen.getPrimary().getVisualBounds();
 	
-	public GameScene(VBox root) {
+	public GameScene(VBox root, double width, double height) {
 		super(root);
 		
 		this.root = root;
 		Monopoly.log("Set GameScene root.");
 		
-		this.gameDrawing = new Canvas(size.getWidth(), size.getHeight());
+		this.gameDrawing = new Canvas(width, height);
 		Monopoly.log("Set GameDrawing size.");
 		
 		init();

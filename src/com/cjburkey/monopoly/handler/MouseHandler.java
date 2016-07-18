@@ -11,7 +11,7 @@ public enum MouseHandler {
 	NORMAL	(false),
 	MOVE	(true),
 	ZOOM	(true),
-	SELECT	(new Point2D(5, 0));
+	SELECT	(new Point2D(11, 0));
 	
 	private boolean center;
 	private Point2D point = Point2D.ZERO;

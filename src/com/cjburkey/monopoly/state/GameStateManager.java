@@ -13,16 +13,19 @@ public class GameStateManager {
 	private static final List<GameState> states = new ArrayList<GameState>();
 	private GameState currentState = null;
 	
+	public static GameState mainMenu;
+	public static GameState mainGame;
+	
 	public void init() {
-		GameState mainMenu = new GameStateMainMenu();
-		GameState mainGame = new GameStateMainGame();
+		mainMenu = new GameStateMainMenu();
+		mainGame = new GameStateMainGame();
 		
 		addGameState(mainMenu);
 		addGameState(mainGame);
 		
 		GameObject.initObjs();
 		
-		setGameState(mainGame);
+		setGameState(mainMenu);
 	}
 	
 	public void setGameState(GameState into) {
@@ -50,6 +53,10 @@ public class GameStateManager {
 		} else if(state != this.currentState) {
 			Monopoly.log("Could not set next game state.  That is already the current state.");
 		}
+	}
+	
+	public GameState getCurrent() {
+		return this.currentState;
 	}
 	
 	public void addGameState(GameState state) {

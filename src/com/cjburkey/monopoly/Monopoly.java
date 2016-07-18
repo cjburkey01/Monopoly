@@ -10,15 +10,16 @@ import com.cjburkey.monopoly.util.SemVer;
 import com.cjburkey.monopoly.window.GameScene;
 import com.cjburkey.monopoly.window.GameWindow;
 import javafx.application.Application;
-import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Monopoly extends Application {
 	
-	public static final SemVer GAME_VERSION = new SemVer("0.0.0", false);
+	public static final SemVer GAME_VERSION = new SemVer(0, 0, 0, false);
 	
 	private static GameWindow window;
 	private static MainLoop loop;
@@ -32,15 +33,20 @@ public class Monopoly extends Application {
 	}
 	
 	private void asciiArt() throws Exception {
-		Scanner s = new Scanner(getClass().getClassLoader().getResourceAsStream("res/fun/startText.txt"));
-		while(s.hasNextLine()) {
-			String line = s.nextLine();
-			System.out.println(line);
-		}
-		s.close();
+		new Thread(() -> {
+			Scanner s = new Scanner(getClass().getClassLoader().getResourceAsStream("res/fun/startText.txt"));
+			while(s.hasNextLine()) {
+				String line = s.nextLine();
+				System.out.println(line);
+				try {
+					Thread.sleep(25);
+				} catch (Exception e) {  }
+			}
+			s.close();
+		}).start();
 	}
 	
-	public void start(Stage s) {
+	private static final void init(Stage s, double width, double height) {
 		Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
 			genericError(e);
 		});
@@ -54,21 +60,10 @@ public class Monopoly extends Application {
 		log("\t--[ Finished Version Check ]--");
 		getLogger().lineBreak();
 		
-		try {
-			getLogger().lineBreak();
-			log("Now some fun art as a test:");
-			getLogger().lineBreak();
-			asciiArt();
-			getLogger().lineBreak();
-			log("Did you like it?");
-			getLogger().lineBreak();
-			
-		} catch(Exception e) { log("Ascii art failed to load :\\"); }
-		
 		stateManager = new GameStateManager();
 		log("Created GameStateManager.");
 		
-		window = new GameWindow(s);
+		window = new GameWindow(s, width, height);
 		log("Created GameWindow.");
 		
 		loop = MainLoop.createGameLoop();
@@ -79,6 +74,21 @@ public class Monopoly extends Application {
 		
 		window.init();
 		log("Initialized GameWindow.");
+	}
+	
+	public void start(Stage s) {
+		try {
+			final Rectangle2D size = Screen.getPrimary().getVisualBounds();
+			init(s, size.getWidth() / 1, size.getHeight() / 1);
+			
+			try {
+				getLogger().lineBreak();
+				log("Now some fun art as a test:");
+				asciiArt();
+			} catch(Exception e) { log("Ascii art failed to load :\\"); }
+		} catch(Exception e) {
+			genericError(e);
+		}
 	}
 	
 	public static final void tick(float delta) {
@@ -109,11 +119,9 @@ public class Monopoly extends Application {
 	
 	public static final void genericError(Throwable t) {
 		t.printStackTrace();
-		Platform.exit();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) { genericError(e); }
-		System.exit(t.getClass().hashCode());
+		log("An error occurred.");
+		log("Taht no güd..");
+		System.exit(-1);
 	}
 	
 	public static final void log(Object msg) { logger.log("" + msg); }
@@ -122,12 +130,11 @@ public class Monopoly extends Application {
 	public static final GameScene getScene() { return getWindow().getScene(); }
 	public static final MainLoop getGameLoop() { return loop; }
 	public static final GameStateManager getStateManager() { return stateManager; }
-	
 
 	public static final void closeGame() {
-		exitLoop();
+		exitLoop(true);
 		getWindow().getStage().close();
 	}
-	private static final void exitLoop() { getGameLoop().stop(); }
+	private static final void exitLoop(boolean killGameToo) { getGameLoop().stop(killGameToo); }
 	
 }

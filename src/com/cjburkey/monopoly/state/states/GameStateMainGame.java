@@ -11,6 +11,7 @@ import com.cjburkey.monopoly.render.gui.elements.GuiButtonCentered;
 import com.cjburkey.monopoly.render.gui.elements.GuiLabel;
 import com.cjburkey.monopoly.render.gui.elements.GuiScreen;
 import com.cjburkey.monopoly.state.GameState;
+import com.cjburkey.monopoly.state.GameStateManager;
 import com.cjburkey.monopoly.util.Maths;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -118,34 +119,45 @@ public class GameStateMainGame extends GameState {
 			}
 		});
 		
-		guiHandler = new GuiHandler();
+		guiHandler = new GuiHandler(this);
 		GuiHandler.addGuiHandler(guiHandler);
 		
 		Canvas canvas = Monopoly.getWindow().getScene().getGameCanvas();
 		GuiScreen screen = new GuiScreen(new Point2D(canvas.getWidth() / 2, canvas.getHeight() / 2), true);
 		guiHandler.addElement(screen);
 		
-		GuiLabel label = new GuiLabel("Close game?", new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
+		GuiLabel label = new GuiLabel("Go to main menu?", new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
 				screen.getPosition().getMinY() + 10), Font.font(24), Color.WHITE, true);
 		screen.addElement(label);
-		label.show();
 		
 		GuiButtonCentered no = new GuiButtonCentered(new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
-				screen.getPosition().getMinY() + screen.getPosition().getHeight() - 100), () -> { screen.hide(); }, "No");
+				screen.getPosition().getMinY() + screen.getPosition().getHeight() - 100), () -> {
+					screen.hide();
+				}, "No", 5, screen.getPosition().getWidth() / 1.2);
 		screen.addElement(no);
-		no.show();
 		
 		GuiButtonCentered yes = new GuiButtonCentered(new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
-				no.getPosition().getMinY() + 75), () -> { Monopoly.closeGame(); }, "Yes");
+			no.getPosition().getMinY() + no.getPosition().getHeight() * 1.5), () -> {
+				Monopoly.getStateManager().setGameState(GameStateManager.mainMenu);
+			}, "Yes", 5, screen.getPosition().getWidth() / 1.2);
 		screen.addElement(yes);
-		yes.show();
 		
-		GuiButton exit = new GuiButton(new Point2D(2, 2), () -> { screen.show(); }, "Exit Game.");
+		GuiButton exit = new GuiButton(new Point2D(2, 2), () -> { screen.show(); Monopoly.log("Pause game."); }, "Main Menu", 15);
 		guiHandler.addElement(exit);
 		
 		exit.show();
 	}
 	
-	public void exitState(GameState next) {  }
+	public void exitState(GameState next) {
+		ObjectInstance.objInstances.clear();
+		Monopoly.log("Cleared instances");
+		GameObject.gameObjs.clear();
+		Monopoly.log("Cleared objects.");
+		guiHandler.clear();
+		Monopoly.log("Cleared gui.");
+		GuiHandler.removeHandler(guiHandler);
+		guiHandler = null;
+		Monopoly.log("Disabled GUI handler.");
+	}
 	
 }

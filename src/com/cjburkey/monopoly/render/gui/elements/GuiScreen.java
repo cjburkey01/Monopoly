@@ -25,18 +25,23 @@ public class GuiScreen extends GuiElement {
 	public void show() {
 		super.show();
 		Monopoly.guiScreenOpen = true;
+		for(GuiElement e : elements) {
+			e.show();
+		}
 	}
 	
 	public void hide() {
 		super.hide();
 		Monopoly.guiScreenOpen = false;
+		for(GuiElement e : elements) {
+			e.hide();
+		}
 	}
 	
 	public void render(float delta, GraphicsContext gc) {
 		gc.setFill(Color.rgb(0, 0, 0, 0.75d));
 		gc.fillRect(this.getPosition().getMinX(), this.getPosition().getMinY(), this.getPosition().getWidth(), this.getPosition().getHeight());
 		
-		//gc.translate(this.getPosition().getMinX(), this.getPosition().getMinY());
 		for(GuiElement e : elements) {
 			if(!e.isHidden()) {
 				gc.save();
@@ -44,7 +49,17 @@ public class GuiScreen extends GuiElement {
 				gc.restore();
 			}
 		}
-		//gc.translate(-this.getPosition().getMinX(), -this.getPosition().getMinY());
+	}
+	
+	public void clear() {
+		for(GuiElement e : elements) {
+			e.hide();
+			if(e instanceof GuiScreen) {
+				((GuiScreen) e).clear();
+			}
+			e = null;
+		}
+		elements.clear();
 	}
 	
 	public void addElement(GuiElement e) {
