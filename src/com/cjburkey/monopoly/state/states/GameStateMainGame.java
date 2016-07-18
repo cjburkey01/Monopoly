@@ -135,14 +135,16 @@ public class GameStateMainGame extends GameState {
 					screen.hide();
 				}, "No", 5, screen.getPosition().getWidth() / 1.2);
 		screen.addElement(no);
+		no.setColorScheme(Color.WHITE, Color.rgb(0, 0, 100), Color.WHITE, Color.rgb(0, 0, 150));
 		
 		GuiButtonCentered yes = new GuiButtonCentered(new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
 			no.getPosition().getMinY() + no.getPosition().getHeight() * 1.5), () -> {
 				Monopoly.getStateManager().setGameState(GameStateManager.mainMenu);
 			}, "Yes", 5, screen.getPosition().getWidth() / 1.2);
 		screen.addElement(yes);
+		yes.setColorScheme(Color.WHITE, Color.rgb(100, 0, 0), Color.WHITE, Color.rgb(150, 0, 0));
 		
-		GuiButton exit = new GuiButton(new Point2D(2, 2), () -> { screen.show(); Monopoly.log("Pause game."); }, "Main Menu", 15);
+		GuiButton exit = new GuiButton(new Point2D(2, 2), () -> { screen.show(); }, "Main Menu", 15);
 		guiHandler.addElement(exit);
 		
 		exit.show();

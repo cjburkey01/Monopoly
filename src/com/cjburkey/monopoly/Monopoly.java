@@ -17,6 +17,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * Pre-patch 7
+ * @author cjburkey
+ */
 public class Monopoly extends Application {
 	
 	public static final SemVer GAME_VERSION = new SemVer(0, 0, 0, false);
@@ -56,7 +60,7 @@ public class Monopoly extends Application {
 
 		getLogger().lineBreak();
 		log("\t--[ Version Check ]--");
-		log("\t\tHi!  We're running Monopoly version ".toUpperCase() + GAME_VERSION + "!");
+		log("\t\tHi!  We're running jNopoly version v" + GAME_VERSION + "!");
 		log("\t--[ Finished Version Check ]--");
 		getLogger().lineBreak();
 		

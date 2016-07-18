@@ -23,6 +23,14 @@ public class GuiButton extends GuiElement {
 	private double padding;
 	private double prefWidth;
 	
+	public Color[] colors = new Color[] {
+		Color.BLACK,		// Default text color
+		Color.gray(0.75d),		// Default button background
+		
+		Color.WHITE,		// Hover Text Color
+		Color.gray(0.25d),	// Hover button background
+	};
+	
 	private static FontLoader fl = Toolkit.getToolkit().getFontLoader();
 	
 	public static int cooldown = 3;
@@ -31,6 +39,26 @@ public class GuiButton extends GuiElement {
 		super(new Rectangle2D(pos.getX(), pos.getY(), calcWidth(text, prefWidth, padding), calcHeight(padding)));
 		this.onClick = click;
 		this.text = text;
+	}
+	
+	public void setColorScheme(Color text, Color back, Color hovText, Color hovBack) {
+		colors[0] = text;
+		colors[1] = back;
+		colors[2] = hovText;
+		colors[3] = hovBack;
+	}
+	
+	public void render(float delta, GraphicsContext gc) {
+		cooldown --;
+		
+		if(!this.getPosition().contains(lastMouse)) gc.setFill(colors[1]); else gc.setFill(colors[3]);
+		gc.fillRect(this.getPosition().getMinX(), this.getPosition().getMinY(), this.getPosition().getWidth(), this.getPosition().getHeight());
+		
+		if(!this.getPosition().contains(lastMouse)) gc.setFill(colors[0]); else gc.setFill(colors[2]);
+		gc.setTextAlign(TextAlignment.CENTER);
+		gc.setTextBaseline(VPos.CENTER);
+		gc.setFont(Font.font(35));
+		gc.fillText(this.text, this.getPosition().getMinX() + this.getPosition().getWidth() / 2, this.getPosition().getMinY() + this.getPosition().getHeight() / 2);
 	}
 	
 	private static double calcWidth(String text, double prefWidth, double padding) {
@@ -68,19 +96,6 @@ public class GuiButton extends GuiElement {
 			}
 			lastMouse = point;
 		});
-	}
-	
-	public void render(float delta, GraphicsContext gc) {
-		cooldown --;
-		
-		if(!this.getPosition().contains(lastMouse)) gc.setFill(Color.BLACK); else gc.setFill(Color.gray(0.5));
-		gc.fillRect(this.getPosition().getMinX(), this.getPosition().getMinY(), this.getPosition().getWidth(), this.getPosition().getHeight());
-		
-		gc.setFill(Color.WHITE);
-		gc.setTextAlign(TextAlignment.CENTER);
-		gc.setTextBaseline(VPos.CENTER);
-		gc.setFont(Font.font(35));
-		gc.fillText(this.text, this.getPosition().getMinX() + this.getPosition().getWidth() / 2, this.getPosition().getMinY() + this.getPosition().getHeight() / 2);
 	}
 	
 	public Runnable getOnClick() { return this.onClick; }

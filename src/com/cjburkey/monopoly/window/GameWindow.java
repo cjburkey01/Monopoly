@@ -26,7 +26,7 @@ public class GameWindow {
 		this.getStage().centerOnScreen();
 		Monopoly.log("Centered GameWindow.");
 		
-		this.getStage().setResizable(true);
+		this.getStage().setResizable(false);
 		Monopoly.log("Disabled GameWindow's Resizability.");
 		
 		this.getStage().setTitle("jNopoly");

@@ -23,6 +23,7 @@ public class Logger {
 					.replaceAll("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "")
 					.replaceAll("%msg%", msg)
 		);
+		//try { Thread.sleep(25); } catch(Exception e) { e.printStackTrace(); }
 	}
 	
 }
