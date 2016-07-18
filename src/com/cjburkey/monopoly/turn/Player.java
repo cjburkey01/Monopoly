@@ -7,6 +7,7 @@ public class Player {
 	
 	private String name;
 	private PlayerBill[] money;
+	@SuppressWarnings("unused")
 	private ObjectInstance inst;
 	private int inJail = 0;
 	private int turn = 0;

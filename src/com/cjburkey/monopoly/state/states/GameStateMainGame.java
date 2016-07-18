@@ -16,6 +16,7 @@ import com.cjburkey.monopoly.turn.Player;
 import com.cjburkey.monopoly.turn.TurnManager;
 import com.cjburkey.monopoly.util.Maths;
 import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
@@ -27,7 +28,7 @@ import javafx.scene.text.Font;
 public class GameStateMainGame extends GameState {
 	
 	private static Point2D offset = Point2D.ZERO;
-	private static float zoom = 1;
+	private static float zoom = 0.5f;
 	
 	private static Point2D mouse;
 	private static float lastZoom;
@@ -35,7 +36,7 @@ public class GameStateMainGame extends GameState {
 	private static boolean checkZoom = false;
 	private static GuiHandler guiHandler;
 	
-	public static Point2D minMaxZoom = new Point2D(1.3, 3.8);
+	public static Point2D minMaxZoom = new Point2D(0.6f, 1.3);
 	public static Point2D[] minMaxOffset = {
 		new Point2D(-GameObjectGameBoard.sizeWidth / 2, GameObjectGameBoard.sizeWidth / 2),
 		new Point2D(-GameObjectGameBoard.sizeWidth / 2, GameObjectGameBoard.sizeWidth / 2)
@@ -96,6 +97,9 @@ public class GameStateMainGame extends GameState {
 		
 		players = (int) Maths.clamp(players, 2, 8);
 		playerLabel.setText(players + " Players");
+		
+		if(currentPlayer != null && TurnManager.getCurrentPlayer() != null)
+			currentPlayer.setText(TurnManager.getCurrentPlayer().getName() + "'s Turn!");
 	}
 
 	int players = 2;
@@ -108,7 +112,8 @@ public class GameStateMainGame extends GameState {
 		
 		GuiButtonCentered plus = new GuiButtonCentered(Point2D.ZERO, () -> { players ++; }, "+", 5d, 50d);
 		GuiButtonCentered minus = new GuiButtonCentered(Point2D.ZERO, () -> { players --; }, "-", 5d, 50d);
-		GuiButtonCentered go = new GuiButtonCentered(Point2D.ZERO, () -> { setupGame(players); exit.show(); selectionWindow.hide(); }, "Start Game", 5d);
+		GuiButtonCentered go = new GuiButtonCentered(Point2D.ZERO,
+				() -> { setupGame(players); currentPlayer.show(); exit.show(); selectionWindow.hide(); }, "Start Game", 5d);
 		
 		playerLabel = new GuiLabel(players + " Players", new Point2D(canvas.getWidth() / 2,
 				selectionWindow.getPosition().getMinY() + go.getPosition().getHeight() + 25), Font.font(45), Color.WHITE, true);
@@ -133,30 +138,34 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	private void setupGame(int players) {
-		for(int i = 1; i < 11; i ++) {
+		for(int i = 1; i < GameObjectGameBoard.numOfTiles; i ++) {
 			ObjectInstance inst1 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot, new Point2D(-GameObject.gameObjectGameBoard.getSize().getX() / 2,
-					-32 * (i + 1) + GameObject.gameObjectGameBoard.getSize().getY() / 2));
+					-GameObjectGameBoard.pixelPerTile * (i + 1) + GameObject.gameObjectGameBoard.getSize().getY() / 2));
 			ObjectInstance inst2 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
-					new Point2D(32 * i - GameObject.gameObjectGameBoard.getSize().getX() / 2, -GameObject.gameObjectGameBoard.getSize().getY() / 2));
+					new Point2D(GameObjectGameBoard.pixelPerTile * i - GameObject.gameObjectGameBoard.getSize().getX() / 2, -GameObject.gameObjectGameBoard.getSize().getY() / 2));
 			ObjectInstance inst3 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
-					new Point2D(GameObject.gameObjectGameBoard.getSize().getX() / 2 - 32, 32 * i - GameObject.gameObjectGameBoard.getSize().getY() / 2));
+					new Point2D(GameObject.gameObjectGameBoard.getSize().getX() / 2 - GameObjectGameBoard.pixelPerTile, GameObjectGameBoard.pixelPerTile * i - GameObject.gameObjectGameBoard.getSize().getY() / 2));
 			ObjectInstance inst4 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
-					new Point2D(-32 * (i + 1) + GameObject.gameObjectGameBoard.getSize().getX() / 2, GameObject.gameObjectGameBoard.getSize().getY() / 2 - 32));
+					new Point2D(-GameObjectGameBoard.pixelPerTile * (i + 1) + GameObject.gameObjectGameBoard.getSize().getX() / 2, GameObject.gameObjectGameBoard.getSize().getY() / 2 - GameObjectGameBoard.pixelPerTile));
 			
 			inst1.setData("gameObjectBoardSlot-ID", i);
-			inst2.setData("gameObjectBoardSlot-ID", i + 10);
-			inst3.setData("gameObjectBoardSlot-ID", i + 20);
-			inst4.setData("gameObjectBoardSlot-ID", (i + 30 == 40) ? 0 : i + 30);
-			
-			Monopoly.log("Created game board slots.");
+			inst2.setData("gameObjectBoardSlot-ID", i + (GameObjectGameBoard.numOfTiles - 1));
+			inst3.setData("gameObjectBoardSlot-ID", i + (2 * (GameObjectGameBoard.numOfTiles - 1)));
+			inst4.setData("gameObjectBoardSlot-ID", ((i + (3 * (GameObjectGameBoard.numOfTiles - 1))) == (4 * (GameObjectGameBoard.numOfTiles - 1))) ? (int) 0 : (i + (3 * (GameObjectGameBoard.numOfTiles - 1))));
 		}
 		
 		for(int i = 0; i < players; i ++) {
-			Player p = new Player("Player " + (i + 1), ObjectInstance.createInstance(GameObject.gameObjectPlayer, ObjectInstance.getInstFromId(0).getPosition()));
-			TurnManager.addPlayer(p);
+			Object fromInst = ObjectInstance.getInstFromId(0);
+			if(fromInst != null) {
+				Player p = new Player("Player " + (i + 1), ObjectInstance.createInstance(GameObject.gameObjectPlayer, ((ObjectInstance) fromInst).getPosition()));
+				TurnManager.addPlayer(p);
+			}
 		}
+		
+		TurnManager.startGame();
 	}
 	
+	GuiLabel currentPlayer;
 	public void enterState(GameState previous) {
 		ObjectInstance.createInstance(GameObject.gameObjectGameBoard, Point2D.ZERO);
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
@@ -212,6 +221,10 @@ public class GameStateMainGame extends GameState {
 		
 		exit = new GuiButton(new Point2D(2, 2), () -> { screen.show(); }, "Main Menu", 15);
 		guiHandler.addElement(exit);
+		
+		currentPlayer = new GuiLabel("player.turn", new Point2D(Monopoly.canvasSize().getX() / 2,
+				Monopoly.canvasSize().getY() - 24), Font.font(48), Color.BLACK, true, VPos.BOTTOM);
+		guiHandler.addElement(currentPlayer);
 	}
 	
 	public void exitState(GameState next) {

@@ -51,10 +51,18 @@ public class ObjectInstance {
 	public static final ObjectInstance getInstFromId(int id) {
 		for(ObjectInstance inst : objInstances) {
 			Object data = inst.getData("gameObjectBoardSlot-ID");
-			if(data != null && data instanceof Integer) {
-				int did = (int) data;
-				if(did == id) {
-					return inst;
+			if(data != null) {
+				if(data instanceof Integer) {
+					int did = (int) data;
+					if(did == id) {
+						return inst;
+					}
+				} else if(data instanceof Double) {
+					double tmp = (double) data;
+					int did = (int) tmp;
+					if(did == id) {
+						return inst;
+					}
 				}
 			}
 		}

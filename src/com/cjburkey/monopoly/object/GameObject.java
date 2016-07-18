@@ -5,6 +5,7 @@ import java.util.List;
 import com.cjburkey.monopoly.interfaces.IGameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import com.cjburkey.monopoly.object.objects.GameObjectBoardSlot;
+import com.cjburkey.monopoly.object.objects.GameObjectDice;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
 import com.cjburkey.monopoly.object.objects.GameObjectPlayer;
 import javafx.geometry.Point2D;
@@ -18,6 +19,7 @@ public class GameObject implements IGameObject {
 	public static GameObject gameObjectGameBoard;
 	public static GameObject gameObjectBoardSlot;
 	public static GameObject gameObjectPlayer;
+	public static GameObject gameObjectDice;
 	
 	public GameObject(String name) {
 		this.name = name;
@@ -38,6 +40,7 @@ public class GameObject implements IGameObject {
 		gameObjectGameBoard = new GameObjectGameBoard();
 		gameObjectBoardSlot = new GameObjectBoardSlot();
 		gameObjectPlayer = new GameObjectPlayer();
+		gameObjectDice = new GameObjectDice();
 	}
 	
 }
