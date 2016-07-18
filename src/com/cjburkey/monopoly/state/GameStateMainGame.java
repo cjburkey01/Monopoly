@@ -84,7 +84,6 @@ public class GameStateMainGame extends GameState {
 				if(mouse != null) {
 					Point2D diff = now.subtract(mouse);
 					offset = offset.add(diff);
-					Monopoly.log(offset);
 				}
 				mouse = now;
 			}

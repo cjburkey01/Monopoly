@@ -4,6 +4,7 @@ import com.cjburkey.monopoly.gameloop.MainLoop;
 import com.cjburkey.monopoly.handler.MouseHandler;
 import com.cjburkey.monopoly.state.GameStateManager;
 import com.cjburkey.monopoly.util.Logger;
+import com.cjburkey.monopoly.util.SemVer;
 import com.cjburkey.monopoly.window.GameScene;
 import com.cjburkey.monopoly.window.GameWindow;
 import javafx.application.Application;
@@ -13,6 +14,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Monopoly extends Application {
+	
+	public static final SemVer GAME_VERSION = new SemVer("0.0.0", false);
 	
 	private static GameWindow window;
 	private static MainLoop loop;
@@ -26,6 +29,8 @@ public class Monopoly extends Application {
 	public void start(Stage s) {
 		logger = new Logger("Monopoly", "[%hour%:%minute%:%second%] %msg%");
 		log("Created Logger.");
+		
+		log("Hi!  We're running Monopoly version '" + GAME_VERSION + "'");
 		
 		stateManager = new GameStateManager();
 		log("Created GameStateManager.");

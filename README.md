@@ -1,2 +1,2 @@
-# Monopoly
+# jNopoly
 Simple Monopoly in Java

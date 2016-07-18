@@ -83,14 +83,15 @@ public class MainLoop {
 		}
 		
 		try {
-			Monopoly.log("Start error-preventing wait time of 1000 miliseconds.");
+			Monopoly.log("Giving everything in the FX thread 1000 miliseconds to finished up.");
 			Thread.sleep(1000);
-			Monopoly.log("Finished.");
+			Monopoly.log("Done.");
 		} catch(Exception e) {
 			e.printStackTrace();
 			Monopoly.log("There was an error during the wait.  Exit now.");
 		}
-		
+
+		Monopoly.log("Closing.");
 		Platform.exit();
 	}
 	
