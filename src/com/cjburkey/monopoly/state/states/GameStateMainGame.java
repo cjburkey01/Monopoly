@@ -6,14 +6,20 @@ import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
 import com.cjburkey.monopoly.render.gui.GuiHandler;
-import com.cjburkey.monopoly.render.gui.GuiLabel;
+import com.cjburkey.monopoly.render.gui.elements.GuiButton;
+import com.cjburkey.monopoly.render.gui.elements.GuiButtonCentered;
+import com.cjburkey.monopoly.render.gui.elements.GuiLabel;
+import com.cjburkey.monopoly.render.gui.elements.GuiScreen;
 import com.cjburkey.monopoly.state.GameState;
 import com.cjburkey.monopoly.util.Maths;
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class GameStateMainGame extends GameState {
 	
@@ -49,6 +55,8 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	public void render(float delta, GraphicsContext gc) {
+		gc.save();
+		
 		zoom = (float) Maths.clamp(zoom, minMaxZoom.getX(), minMaxZoom.getY());
 		offset = new Point2D(Maths.clamp(offset.getX(), minMaxOffset[0].getX(), minMaxOffset[0].getY()),
 				Maths.clamp(offset.getY(), minMaxOffset[1].getX(), minMaxOffset[1].getY()));
@@ -73,17 +81,21 @@ public class GameStateMainGame extends GameState {
 		gc.translate(offset.getX(), offset.getY());
 		
 		for(ObjectInstance inst : ObjectInstance.objInstances) {
+			gc.save();
 			inst.render(delta, gc);
+			gc.restore();
 		}
 		
 		gc.translate(-offset.getX(), -offset.getY());
 		gc.scale(1 / zoom, 1 / zoom);
+		
+		gc.restore();
 	}
 	
 	public void enterState(GameState previous) {
 		ObjectInstance.createInstance(GameObject.gameObjectGameBoard, Point2D.ZERO);
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
-			if(e.getButton().equals(MouseButton.MIDDLE)) {
+			if(!Monopoly.guiScreenOpen && e.getButton().equals(MouseButton.MIDDLE)) {
 				MouseHandler.cursor = MouseHandler.MOVE;
 				Point2D now = new Point2D(e.getX() / zoom, e.getY() / zoom);
 				if(mouse != null) {
@@ -95,24 +107,43 @@ public class GameStateMainGame extends GameState {
 		});
 		
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
-			if(e.getButton().equals(MouseButton.MIDDLE)) {
-				mouse = null;
-				MouseHandler.cursor = MouseHandler.NORMAL;
-			}
+			mouse = null;
+			MouseHandler.cursor = MouseHandler.NORMAL;
 		});
 		
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(ScrollEvent.SCROLL, e -> {
-			zoom += e.getDeltaY() * 0.01;
-			checkZoom = true;
+			if(!Monopoly.guiScreenOpen) {
+				zoom += e.getDeltaY() * 0.01;
+				checkZoom = true;
+			}
 		});
 		
 		guiHandler = new GuiHandler();
 		GuiHandler.addGuiHandler(guiHandler);
 		
-		GuiLabel l = new GuiLabel("Test message", new Point2D(0, 0));
-		guiHandler.addElement(l);
+		Canvas canvas = Monopoly.getWindow().getScene().getGameCanvas();
+		GuiScreen screen = new GuiScreen(new Point2D(canvas.getWidth() / 2, canvas.getHeight() / 2), true);
+		guiHandler.addElement(screen);
 		
-		l.show();
+		GuiLabel label = new GuiLabel("Close game?", new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
+				screen.getPosition().getMinY() + 10), Font.font(24), Color.WHITE, true);
+		screen.addElement(label);
+		label.show();
+		
+		GuiButtonCentered no = new GuiButtonCentered(new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
+				screen.getPosition().getMinY() + screen.getPosition().getHeight() - 100), () -> { screen.hide(); }, "No");
+		screen.addElement(no);
+		no.show();
+		
+		GuiButtonCentered yes = new GuiButtonCentered(new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
+				no.getPosition().getMinY() + 75), () -> { Monopoly.closeGame(); }, "Yes");
+		screen.addElement(yes);
+		yes.show();
+		
+		GuiButton exit = new GuiButton(new Point2D(2, 2), () -> { screen.show(); }, "Exit Game.");
+		guiHandler.addElement(exit);
+		
+		exit.show();
 	}
 	
 	public void exitState(GameState next) {  }

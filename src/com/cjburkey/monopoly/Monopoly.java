@@ -10,6 +10,7 @@ import com.cjburkey.monopoly.util.SemVer;
 import com.cjburkey.monopoly.window.GameScene;
 import com.cjburkey.monopoly.window.GameWindow;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -18,12 +19,13 @@ import javafx.stage.Stage;
 public class Monopoly extends Application {
 	
 	public static final SemVer GAME_VERSION = new SemVer("0.0.0", false);
-	private static double transY;
 	
 	private static GameWindow window;
 	private static MainLoop loop;
 	private static Logger logger;
 	private static GameStateManager stateManager;
+	
+	public static boolean guiScreenOpen = false;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -39,6 +41,10 @@ public class Monopoly extends Application {
 	}
 	
 	public void start(Stage s) {
+		Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+			genericError(e);
+		});
+		
 		logger = new Logger("Monopoly", "[%hour%:%minute%:%second%] %msg%");
 		log("Created Logger.");
 
@@ -73,12 +79,6 @@ public class Monopoly extends Application {
 		
 		window.init();
 		log("Initialized GameWindow.");
-		
-		double offsetY = getWindow().getScene().getWindow().getHeight() - getWindow().getScene().getHeight();
-		log("Calculated offset on Y.");
-		
-		getWindow().getScene().getGameCanvas().getGraphicsContext2D().translate(0, offsetY);
-		log("Set offset on Y.");
 	}
 	
 	public static final void tick(float delta) {
@@ -107,12 +107,27 @@ public class Monopoly extends Application {
 		}
 	}
 	
+	public static final void genericError(Throwable t) {
+		t.printStackTrace();
+		Platform.exit();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) { genericError(e); }
+		System.exit(t.getClass().hashCode());
+	}
+	
 	public static final void log(Object msg) { logger.log("" + msg); }
 	public static final Logger getLogger() { return logger; }
-	public static final void closeGame() { getGameLoop().stop(); }
 	public static final GameWindow getWindow() { return window; }
 	public static final GameScene getScene() { return getWindow().getScene(); }
 	public static final MainLoop getGameLoop() { return loop; }
 	public static final GameStateManager getStateManager() { return stateManager; }
+	
+
+	public static final void closeGame() {
+		exitLoop();
+		getWindow().getStage().close();
+	}
+	private static final void exitLoop() { getGameLoop().stop(); }
 	
 }

@@ -12,7 +12,9 @@ public class GuiHandler {
 	public void drawElements(float delta, GraphicsContext gc) {
 		for(GuiElement e : elements) {
 			if(!e.isHidden()) {
+				gc.save();
 				e.render(delta, gc);
+				gc.restore();
 			}
 		}
 	}

@@ -1,1 +1,1 @@
-Thanks to **ItsPete** on [rw-designer.com] (http://www.rw-designer.com/cursor-set/peters-aerows) for the awesome cursors.
+Thanks to **benjy2429** on [rw-designer.com] (http://www.rw-designer.com/cursor-set/aero-no-tail) for the awesome cursors.

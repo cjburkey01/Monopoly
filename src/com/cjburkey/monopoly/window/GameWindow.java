@@ -43,7 +43,6 @@ public class GameWindow {
 		this.getStage().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, e -> {
 			e.consume();
 			Monopoly.closeGame();
-			this.getStage().close();
 		});
 		Monopoly.log("Registered GameWindow OnCloseRequest handler.");
 	}

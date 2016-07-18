@@ -19,6 +19,6 @@ public class GuiElement implements IGuiElement {
 	public void render(float delta, GraphicsContext gc) {  }
 	public void hide() { this.hidden = true; }
 	public void show() { this.hidden = false; }
-	public void toggleShow() { this.hidden = !this.hidden; }
+	public void toggleShow() { if(this.isHidden()) this.show(); else this.hide(); }
 	
 }

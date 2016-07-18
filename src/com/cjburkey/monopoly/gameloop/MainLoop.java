@@ -39,6 +39,10 @@ public class MainLoop {
 	}
 	
 	public void start() {
+		Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+			Monopoly.genericError(e);
+		});
+		
 		if(init) return;
 		init = true;
 		running = true;
@@ -83,7 +87,7 @@ public class MainLoop {
 		}
 		
 		try {
-			Monopoly.log("Giving everything in the FX thread 1000 miliseconds to finished up.");
+			Monopoly.log("Giving everything in the FX thread 1000 miliseconds to finish up.");
 			Thread.sleep(1000);
 			Monopoly.log("Done.");
 		} catch(Exception e) {
