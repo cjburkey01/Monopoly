@@ -16,14 +16,15 @@ public class Logger {
 	public void lineBreak() { System.out.println(); }
 	
 	public void log(String msg) {
-		System.out.println("[" + owner + "] " + 
-				format
-					.replaceAll("%second%", Calendar.getInstance().get(Calendar.SECOND) + "")
-					.replaceAll("%minute%", Calendar.getInstance().get(Calendar.MINUTE) + "")
-					.replaceAll("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "")
-					.replaceAll("%msg%", msg)
-		);
-		//try { Thread.sleep(25); } catch(Exception e) { e.printStackTrace(); }
+		log(msg, false);
+	}
+	
+	public void log(String msg, boolean error) {
+		String out = "[" + owner + "] " + format.replaceAll("%second%", Calendar.getInstance().get(Calendar.SECOND) + "")
+				.replaceAll("%minute%", Calendar.getInstance().get(Calendar.MINUTE) + "")
+				.replaceAll("%hour%", Calendar.getInstance().get(Calendar.HOUR) + "")
+				.replaceAll("%msg%", msg);
+		if(error) System.err.println(out); else System.out.println(out);
 	}
 	
 }

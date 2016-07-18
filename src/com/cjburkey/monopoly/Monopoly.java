@@ -19,8 +19,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
- * Pre-patch 11
- * @author cjburkey
+ * Pre-patch 12
+ * @author CJ Burkey
  */
 public class Monopoly extends Application {
 	
@@ -112,9 +112,6 @@ public class Monopoly extends Application {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
 		gc.clearRect(-100, -100, canvas.getWidth() + 100, canvas.getHeight() + 100);
-		//gc.setFill(Color.WHITE);
-		//gc.setStroke(Color.WHITE);
-		//gc.fillRect(-100, -100, canvas.getWidth() + 100, canvas.getHeight() + 100);
 		
 		gc.translate(canvas.getWidth() / 2, canvas.getHeight() / 2);
 		getStateManager().render(gc);
@@ -126,9 +123,19 @@ public class Monopoly extends Application {
 	}
 	
 	public static final void genericError(Throwable t) {
-		t.printStackTrace();
-		log("An error occurred.");
-		log("Taht no güd..");
+		getLogger().log("\t--[ BEGIN ERROR REPORT ]--", true);
+		getLogger().log("\t\tAn error occurred.", true);
+		getLogger().log("\t\tTaht no güd..", true);
+		getLogger().log("\t\tMain Report: '" + t.getMessage() + "'", true);
+		getLogger().log("\t\tCheck for this error on the issues page(https://github.com/cjburkey01/Monopoly/issues)", true);
+		getLogger().log("\t\tIf it doesn't exist, please submit it.", true);
+		getLogger().log("\t--[ END ERROR REPORT ]--", true);
+		getLogger().log("\t--[ START DETAILED REPORT ]--", true);
+		
+		for(StackTraceElement e : t.getStackTrace()) {
+			System.err.println("\tat: " + e.getClassName() + "." + e.getMethodName());
+		}
+		getLogger().log("\t--[ END DETAILED REPORT ]--", true);
 		System.exit(-1);
 	}
 	
