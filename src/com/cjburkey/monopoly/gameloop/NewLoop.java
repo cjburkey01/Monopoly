@@ -45,7 +45,7 @@ public class NewLoop {
 	
 	public void stop() {
 		timer.stop();
-
+		Monopoly.getStateManager().getCurrent().exitState(null);
 		Monopoly.log("Closing.");
 		Platform.exit();
 	}

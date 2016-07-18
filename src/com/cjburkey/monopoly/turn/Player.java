@@ -1,18 +1,21 @@
 package com.cjburkey.monopoly.turn;
 
 import com.cjburkey.monopoly.money.PlayerBill;
+import com.cjburkey.monopoly.object.instance.ObjectInstance;
 
 public class Player {
 	
 	private String name;
 	private PlayerBill[] money;
+	private ObjectInstance inst;
 	private int inJail = 0;
 	private int turn = 0;
 	private int place = 0;
 	private int rounds = 0;
 	
-	public Player(String name) {
+	public Player(String name, ObjectInstance inst) {
 		this.name = name;
+		this.inst = inst;
 		money = PlayerBill.getDefaultStartingBills();
 	}
 	

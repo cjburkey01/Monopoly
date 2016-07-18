@@ -48,6 +48,19 @@ public class ObjectInstance {
 	public void perSecond(int fps) { parent.perSecond(fps, this); }
 	public void render(GraphicsContext gc) { parent.render(gc, this); }
 	
+	public static final ObjectInstance getInstFromId(int id) {
+		for(ObjectInstance inst : objInstances) {
+			Object data = inst.getData("gameObjectBoardSlot-ID");
+			if(data != null && data instanceof Integer) {
+				int did = (int) data;
+				if(did == id) {
+					return inst;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public static final List<ObjectInstance> objInstances = new ArrayList<ObjectInstance>();
 	
 	public static final ObjectInstance createInstance(GameObject obj, Point2D pos) {

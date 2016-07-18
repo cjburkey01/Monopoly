@@ -3,6 +3,7 @@ package com.cjburkey.monopoly;
 import java.util.Scanner;
 import com.cjburkey.monopoly.gameloop.NewLoop;
 import com.cjburkey.monopoly.handler.MouseHandler;
+import com.cjburkey.monopoly.img.TextureManager;
 import com.cjburkey.monopoly.render.gui.GuiHandler;
 import com.cjburkey.monopoly.state.GameStateManager;
 import com.cjburkey.monopoly.util.Logger;
@@ -18,13 +19,12 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
- * Pre-patch 7
+ * Pre-patch 10
  * @author cjburkey
  */
 public class Monopoly extends Application {
 	
 	public static final SemVer GAME_VERSION = new SemVer(0, 0, 0, false);
-	public static final double GAME_HERTZ = 60.0d;		//60.0d for America, 50.0d for Europe and Asia.
 	
 	private static GameWindow window;
 	private static NewLoop loop;
@@ -65,13 +65,14 @@ public class Monopoly extends Application {
 		log("\t--[ Finished Version Check ]--");
 		getLogger().lineBreak();
 		
+		TextureManager.init();
+		
 		stateManager = new GameStateManager();
 		log("Created GameStateManager.");
 		
 		window = new GameWindow(s, width, height);
 		log("Created GameWindow.");
 		
-		//loop = MainLoop.createGameLoop();
 		loop = NewLoop.createLoop();
 		log("Created and started MainGameLoop.");
 		
@@ -85,7 +86,7 @@ public class Monopoly extends Application {
 	public void start(Stage s) {
 		try {
 			final Rectangle2D size = Screen.getPrimary().getVisualBounds();
-			init(s, size.getWidth() / 2, size.getHeight() / 2);
+			init(s, size.getWidth() / 1, size.getHeight() / 1);
 			
 			try {
 				getLogger().lineBreak();

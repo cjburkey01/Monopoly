@@ -10,7 +10,7 @@ public class MainLoop {
 	private boolean running = false;
 	private boolean killGameToo = false;
 	
-	public static final double TIME_BETWEEN_UPDATES = 1000000000 / Monopoly.GAME_HERTZ;
+	public static final double TIME_BETWEEN_UPDATES = 1000000000 / 60.0d;
 	public static final int MAX_UPDATES_BEFORE_RENDER = 5;
 	public static final double TARGET_FPS = 60;
 	public static final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;

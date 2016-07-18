@@ -1,38 +1,33 @@
 package com.cjburkey.monopoly.handler;
 
-import com.cjburkey.monopoly.Monopoly;
-import com.cjburkey.monopoly.util.ImageUtil;
+import com.cjburkey.monopoly.img.TextureManager;
 import javafx.geometry.Point2D;
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 
 public enum MouseHandler {
 	
-	NORMAL	(false),
-	MOVE	(true),
-	ZOOM	(true),
-	SELECT	(new Point2D(11, 0));
+	NORMAL	(false, TextureManager.imgCurNormal),
+	MOVE	(true, TextureManager.imgCurMove),
+	ZOOM	(true, TextureManager.imgCurZoom),
+	SELECT	(new Point2D(11, 0), TextureManager.imgCurSelect);
 	
 	private boolean center;
 	private Point2D point = Point2D.ZERO;
-	MouseHandler(boolean center) {
+	Image img;
+	MouseHandler(boolean center, Image img) {
 		this.center = center;
+		this.img = img;
 	}
-	MouseHandler(Point2D point) {
+	MouseHandler(Point2D point, Image img) {
 		this.point = point;
+		this.img = img;
 	}
 	
 	public static final ImageCursor getCursor(MouseHandler handler) {
-		Image img = ImageUtil.loadImage("res/cur/" + handler + ".png", new Point2D(48, 48), false);
-		if(img == null || img.isError()) {
-			Monopoly.log("Couldn't load image.");
-			img.getException().printStackTrace();
-			return null;
-		}
-
-		Point2D point = new Point2D(img.getWidth() / 2, img.getHeight() / 2);
+		Point2D point = new Point2D(handler.img.getWidth() / 2, handler.img.getHeight() / 2);
 		if(!handler.center) point = handler.point;
-		return new ImageCursor(img, point.getX(), point.getY());
+		return new ImageCursor(handler.img, point.getX(), point.getY());
 	}
 	
 	public static MouseHandler cursor = NORMAL;

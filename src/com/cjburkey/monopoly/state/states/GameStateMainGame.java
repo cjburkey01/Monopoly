@@ -133,27 +133,27 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	private void setupGame(int players) {
-		for(int i = 0; i < players; i ++) {
-			Player p = new Player("Player " + (i + 1));
-			TurnManager.addPlayer(p);
-		}
-		
 		for(int i = 1; i < 11; i ++) {
 			ObjectInstance inst1 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot, new Point2D(-GameObject.gameObjectGameBoard.getSize().getX() / 2,
 					-32 * (i + 1) + GameObject.gameObjectGameBoard.getSize().getY() / 2));
-			inst1.setData("gameObjectBoardSlot-ID", i);
-			
 			ObjectInstance inst2 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
 					new Point2D(32 * i - GameObject.gameObjectGameBoard.getSize().getX() / 2, -GameObject.gameObjectGameBoard.getSize().getY() / 2));
-			inst2.setData("gameObjectBoardSlot-ID", i + 10);
-			
 			ObjectInstance inst3 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
 					new Point2D(GameObject.gameObjectGameBoard.getSize().getX() / 2 - 32, 32 * i - GameObject.gameObjectGameBoard.getSize().getY() / 2));
-			inst3.setData("gameObjectBoardSlot-ID", i + 20);
-			
 			ObjectInstance inst4 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
 					new Point2D(-32 * (i + 1) + GameObject.gameObjectGameBoard.getSize().getX() / 2, GameObject.gameObjectGameBoard.getSize().getY() / 2 - 32));
+			
+			inst1.setData("gameObjectBoardSlot-ID", i);
+			inst2.setData("gameObjectBoardSlot-ID", i + 10);
+			inst3.setData("gameObjectBoardSlot-ID", i + 20);
 			inst4.setData("gameObjectBoardSlot-ID", (i + 30 == 40) ? 0 : i + 30);
+			
+			Monopoly.log("Created game board slots.");
+		}
+		
+		for(int i = 0; i < players; i ++) {
+			Player p = new Player("Player " + (i + 1), ObjectInstance.createInstance(GameObject.gameObjectPlayer, ObjectInstance.getInstFromId(0).getPosition()));
+			TurnManager.addPlayer(p);
 		}
 	}
 	
