@@ -1,12 +1,12 @@
 package com.cjburkey.monopoly.state.states;
 
 import com.cjburkey.monopoly.Monopoly;
-import com.cjburkey.monopoly.gameloop.render.gui.GuiHandler;
-import com.cjburkey.monopoly.gameloop.render.gui.GuiLabel;
 import com.cjburkey.monopoly.handler.MouseHandler;
 import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
+import com.cjburkey.monopoly.render.gui.GuiHandler;
+import com.cjburkey.monopoly.render.gui.GuiLabel;
 import com.cjburkey.monopoly.state.GameState;
 import com.cjburkey.monopoly.util.Maths;
 import javafx.geometry.Point2D;

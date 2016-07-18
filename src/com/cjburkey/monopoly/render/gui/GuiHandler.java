@@ -1,4 +1,4 @@
-package com.cjburkey.monopoly.gameloop.render.gui;
+package com.cjburkey.monopoly.render.gui;
 
 import java.util.ArrayList;
 import java.util.List;

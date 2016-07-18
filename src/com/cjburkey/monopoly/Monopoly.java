@@ -2,8 +2,8 @@ package com.cjburkey.monopoly;
 
 import java.util.Scanner;
 import com.cjburkey.monopoly.gameloop.MainLoop;
-import com.cjburkey.monopoly.gameloop.render.gui.GuiHandler;
 import com.cjburkey.monopoly.handler.MouseHandler;
+import com.cjburkey.monopoly.render.gui.GuiHandler;
 import com.cjburkey.monopoly.state.GameStateManager;
 import com.cjburkey.monopoly.util.Logger;
 import com.cjburkey.monopoly.util.SemVer;

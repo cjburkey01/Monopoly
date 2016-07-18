@@ -1,4 +1,4 @@
-package com.cjburkey.monopoly.gameloop.render.gui;
+package com.cjburkey.monopoly.render.gui;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
