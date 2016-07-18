@@ -3,6 +3,7 @@ package com.cjburkey.monopoly.object.instance;
 import java.util.ArrayList;
 import java.util.List;
 import com.cjburkey.monopoly.object.GameObject;
+import com.cjburkey.monopoly.util.Data;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -11,9 +12,31 @@ public class ObjectInstance {
 	public GameObject parent;
 	public Point2D position;
 	
+	private final List<Data> data = new ArrayList<Data>();
+	
 	public ObjectInstance(GameObject parent) {
 		this.parent = parent;
 		this.position = new Point2D(0, 0);
+	}
+	
+	public void setData(String key, Object value) {
+		for(Data data : data) {
+			if(data.getKey().equals(key)) {
+				data.setValue(value);
+				return;
+			}
+		}
+		
+		data.add(new Data(key, value));
+	}
+	
+	public Object getData(String key) {
+		for(Data data : data) {
+			if(data != null && data.getKey() != null && data.getKey().equals(key)) {
+				return data.getValue();
+			}
+		}
+		return null;
 	}
 	
 	public Point2D getPosition() {

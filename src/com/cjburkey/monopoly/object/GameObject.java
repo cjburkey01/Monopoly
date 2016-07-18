@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.cjburkey.monopoly.interfaces.IGameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.objects.GameObjectBoardSlot;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,6 +15,7 @@ public class GameObject implements IGameObject {
 	private Point2D size;
 	
 	public static GameObject gameObjectGameBoard;
+	public static GameObject gameObjectBoardSlot;
 	
 	public GameObject(String name) {
 		this.name = name;
@@ -32,6 +34,7 @@ public class GameObject implements IGameObject {
 	
 	public static final void initObjs() {
 		gameObjectGameBoard = new GameObjectGameBoard();
+		gameObjectBoardSlot = new GameObjectBoardSlot();
 	}
 	
 }

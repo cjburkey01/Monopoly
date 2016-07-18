@@ -12,6 +12,8 @@ import com.cjburkey.monopoly.render.gui.elements.GuiLabel;
 import com.cjburkey.monopoly.render.gui.elements.GuiScreen;
 import com.cjburkey.monopoly.state.GameState;
 import com.cjburkey.monopoly.state.GameStateManager;
+import com.cjburkey.monopoly.turn.Player;
+import com.cjburkey.monopoly.turn.TurnManager;
 import com.cjburkey.monopoly.util.Maths;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -117,6 +119,10 @@ public class GameStateMainGame extends GameState {
 				selectionWindow.getPosition().getMinY() + minus.getPosition().getWidth() / 2 + 10));
 		go.setPosition(new Point2D(canvas.getWidth() / 2,
 				selectionWindow.getPosition().getMinY() + selectionWindow.getPosition().getHeight() - go.getPosition().getHeight() / 2 - 10));
+
+		plus.setColorScheme(Color.WHITE, Color.rgb(0, 100, 0), Color.WHITE, Color.rgb(0, 150, 0));
+		minus.setColorScheme(Color.WHITE, Color.rgb(100, 0, 0), Color.WHITE, Color.rgb(150, 0, 0));
+		go.setColorScheme(Color.WHITE, Color.rgb(0, 0, 100), Color.WHITE, Color.rgb(0, 0, 150));
 		
 		selectionWindow.addElement(plus);
 		selectionWindow.addElement(minus);
@@ -127,7 +133,28 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	private void setupGame(int players) {
+		for(int i = 0; i < players; i ++) {
+			Player p = new Player("Player " + (i + 1));
+			TurnManager.addPlayer(p);
+		}
 		
+		for(int i = 1; i < 11; i ++) {
+			ObjectInstance inst1 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot, new Point2D(-GameObject.gameObjectGameBoard.getSize().getX() / 2,
+					-32 * (i + 1) + GameObject.gameObjectGameBoard.getSize().getY() / 2));
+			inst1.setData("gameObjectBoardSlot-ID", i);
+			
+			ObjectInstance inst2 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
+					new Point2D(32 * i - GameObject.gameObjectGameBoard.getSize().getX() / 2, -GameObject.gameObjectGameBoard.getSize().getY() / 2));
+			inst2.setData("gameObjectBoardSlot-ID", i + 10);
+			
+			ObjectInstance inst3 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
+					new Point2D(GameObject.gameObjectGameBoard.getSize().getX() / 2 - 32, 32 * i - GameObject.gameObjectGameBoard.getSize().getY() / 2));
+			inst3.setData("gameObjectBoardSlot-ID", i + 20);
+			
+			ObjectInstance inst4 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
+					new Point2D(-32 * (i + 1) + GameObject.gameObjectGameBoard.getSize().getX() / 2, GameObject.gameObjectGameBoard.getSize().getY() / 2 - 32));
+			inst4.setData("gameObjectBoardSlot-ID", (i + 30 == 40) ? 0 : i + 30);
+		}
 	}
 	
 	public void enterState(GameState previous) {
