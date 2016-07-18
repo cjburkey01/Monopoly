@@ -19,14 +19,14 @@ public class GameObjectPlayer extends GameObject {
 		this.setSize(new Point2D(32, 32));
 	}
 	
-	public void render(float delta, GraphicsContext gc, ObjectInstance inst) {
+	public void render(GraphicsContext gc, ObjectInstance inst) {
 		Rectangle2D pos = new Rectangle2D(inst.getPosition().getX(), inst.getPosition().getY(), this.getSize().getX(), this.getSize().getY());
 		
 		gc.setFill(Color.rgb(0, 255, 0, 0.5d));
 		gc.fillRect(pos.getMinX(), pos.getMinY(), pos.getWidth(), pos.getHeight());
 	}
 	
-	public void tick(float delta, ObjectInstance inst) {  }
+	public void tick(ObjectInstance inst) {  }
 	
 	public Player getPlayerObject() { return this.playerObj; }
 	

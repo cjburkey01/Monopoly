@@ -10,8 +10,7 @@ public class MainLoop {
 	private boolean running = false;
 	private boolean killGameToo = false;
 	
-	public static final double GAME_HERTZ = 30.0d;
-	public static final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
+	public static final double TIME_BETWEEN_UPDATES = 1000000000 / Monopoly.GAME_HERTZ;
 	public static final int MAX_UPDATES_BEFORE_RENDER = 5;
 	public static final double TARGET_FPS = 60;
 	public static final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
@@ -19,7 +18,7 @@ public class MainLoop {
 	private double lastUpdateTime = System.nanoTime();
 	private double lastRenderTime = System.nanoTime();
 	private int lastSecondTime = (int) (lastUpdateTime / 1000000000);
-	private float delta = 1;
+	//private float delta = 1;
 	
 	private int fps;
 	private int frameCount;
@@ -55,7 +54,7 @@ public class MainLoop {
 			int updateCount = 0;
 			
 			while(now - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER) {
-				updateGame(delta);
+				updateGame();
 				lastUpdateTime += TIME_BETWEEN_UPDATES;
 				updateCount ++;
 			}
@@ -64,8 +63,8 @@ public class MainLoop {
 				lastUpdateTime = now - TIME_BETWEEN_UPDATES;
 			}
 			
-			delta = Math.min(1.0f, (float) ((now - lastUpdateTime) / TIME_BETWEEN_UPDATES));
-			drawGame(delta);
+			//delta = Math.min(1.0f, (float) ((now - lastUpdateTime) / TIME_BETWEEN_UPDATES));
+			drawGame();
 			lastRenderTime = now;
 			
 			int thisSecond = (int) (lastUpdateTime / 1000000000);
@@ -100,17 +99,17 @@ public class MainLoop {
 		if(this.killGameToo) Platform.exit();
 	}
 	
-	public void updateGame(float delta) {
-		Monopoly.tick(delta);
+	public void updateGame() {
+		Monopoly.tick();
 	}
 	
 	public void perSecond(int fps) {
 		Monopoly.perSecond(fps);
 	}
 	
-	public void drawGame(float delta) {
+	public void drawGame() {
 		frameCount ++;
-		Monopoly.render(delta);
+		Monopoly.render();
 	}
 	
 	public void stop(boolean killGameToo) {

@@ -9,7 +9,7 @@ public interface IGuiElement {
 	public boolean isHidden();
 	
 	public void setPosition(Rectangle2D pos);
-	public void render(float delta, GraphicsContext gc);
+	public void render(GraphicsContext gc);
 	public void hide();
 	public void show();
 	public void toggleShow();

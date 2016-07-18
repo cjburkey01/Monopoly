@@ -26,7 +26,7 @@ public class GameObjectGameBoard extends GameObject {
 		Monopoly.log(fps + " FPS");
 	}*/
 	
-	public void render(float delta, GraphicsContext gc, ObjectInstance inst) {
+	public void render(GraphicsContext gc, ObjectInstance inst) {
 		Rectangle2D pos = new Rectangle2D(inst.getPosition().getX(), inst.getPosition().getY(), this.getSize().getX(), this.getSize().getY());
 		
 		gc.setStroke(Color.BLACK);

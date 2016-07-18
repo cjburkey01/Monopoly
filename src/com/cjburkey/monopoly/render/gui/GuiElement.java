@@ -16,7 +16,7 @@ public class GuiElement implements IGuiElement {
 	public boolean isHidden() { return this.hidden; }
 	
 	public void setPosition(Rectangle2D pos) { this.position = pos; }
-	public void render(float delta, GraphicsContext gc) {  }
+	public void render(GraphicsContext gc) {  }
 	public void hide() { this.hidden = true; }
 	public void show() { this.hidden = false; }
 	public void toggleShow() { if(this.isHidden()) this.show(); else this.hide(); }

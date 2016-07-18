@@ -21,9 +21,9 @@ public class GameObject implements IGameObject {
 	}
 	
 	public void onAdd(ObjectInstance inst) {  }
-	public void tick(float delta, ObjectInstance inst) {  }
+	public void tick(ObjectInstance inst) {  }
 	public void perSecond(int fps, ObjectInstance inst) {  }
-	public void render(float delta, GraphicsContext gc, ObjectInstance inst) {  }
+	public void render(GraphicsContext gc, ObjectInstance inst) {  }
 	public void setSize(Point2D size) { this.size = size; }
 	public String getName() { return this.name; }
 	public Point2D getSize() { return this.size; }

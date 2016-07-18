@@ -11,9 +11,9 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public interface IGameState {
 	
-	void tick(float delta);
+	void tick();
 	void perSecond(int fps);
-	void render(float delta, GraphicsContext gc);
+	void render( GraphicsContext gc);
 	void enterState(GameState previous);
 	void exitState(GameState next);
 	

@@ -18,9 +18,9 @@ public class GameStateMainMenu extends GameState {
 		super("gameStateMainMenu");
 	}
 	
-	public void tick(float delta) {  }
+	public void tick() {  }
 	public void perSecond(int fps) {  }
-	public void render(float delta, GraphicsContext gc) {
+	public void render(GraphicsContext gc) {
 		//Canvas c = Monopoly.getWindow().getScene().getGameCanvas();
 		
 		//gc.setFill(Color.BLACK);
@@ -43,7 +43,6 @@ public class GameStateMainMenu extends GameState {
 		play.setPosition(new Point2D(c.getWidth() / 2, c.getHeight() / 2 - play.getPosition().getHeight() / 2));
 		quit.setPosition(new Point2D(c.getWidth() / 2, c.getHeight() / 2 + quit.getPosition().getHeight() / 2));
 		
-		//play.setColorScheme(Color.BLACK, Color.gray(0.75d), Color.WHITE, Color.gray(0.25d));
 		play.setColorScheme(Color.WHITE, Color.rgb(0, 0, 100), Color.WHITE, Color.rgb(0, 0, 150));
 		quit.setColorScheme(Color.WHITE, Color.rgb(100, 0, 0), Color.WHITE, Color.rgb(150, 0, 0));
 		

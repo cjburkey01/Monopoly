@@ -13,9 +13,9 @@ public class GameState implements IGameState {
 	private String name;
 	
 	public GameState(String name) { this.name = name; }
-	public void tick(float delta) {  }
+	public void tick() {  }
 	public void perSecond(int fps) {  }
-	public void render(float delta, GraphicsContext gc) {  }
+	public void render(GraphicsContext gc) {  }
 	public void enterState(GameState previous) {  }
 	public void exitState(GameState next) {  }
 	

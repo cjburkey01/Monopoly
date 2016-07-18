@@ -25,7 +25,7 @@ public class GuiButton extends GuiElement {
 	
 	public Color[] colors = new Color[] {
 		Color.BLACK,		// Default text color
-		Color.gray(0.75d),		// Default button background
+		Color.gray(0.75d),	// Default button background
 		
 		Color.WHITE,		// Hover Text Color
 		Color.gray(0.25d),	// Hover button background
@@ -48,7 +48,7 @@ public class GuiButton extends GuiElement {
 		colors[3] = hovBack;
 	}
 	
-	public void render(float delta, GraphicsContext gc) {
+	public void render(GraphicsContext gc) {
 		cooldown --;
 		
 		if(!this.getPosition().contains(lastMouse)) gc.setFill(colors[1]); else gc.setFill(colors[3]);

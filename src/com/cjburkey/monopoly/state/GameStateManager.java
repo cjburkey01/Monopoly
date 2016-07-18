@@ -69,9 +69,9 @@ public class GameStateManager {
 		Monopoly.log("Removed GameState: " + state);
 	}
 	
-	public void tick(float delta) {
+	public void tick() {
 		if(this.currentState != null) {
-			this.currentState.tick(delta);
+			this.currentState.tick();
 		}
 	}
 	
@@ -81,9 +81,9 @@ public class GameStateManager {
 		}
 	}
 	
-	public void render(float delta, GraphicsContext gc) {
+	public void render(GraphicsContext gc) {
 		if(this.currentState != null) {
-			this.currentState.render(delta, gc);
+			this.currentState.render(gc);
 		}
 	}
 	

@@ -21,9 +21,9 @@ public class ObjectInstance {
 	}
 	
 	public void onAdd() { parent.onAdd(this); }
-	public void tick(float delta) { parent.tick(delta, this); }
+	public void tick() { parent.tick(this); }
 	public void perSecond(int fps) { parent.perSecond(fps, this); }
-	public void render(float delta, GraphicsContext gc) { parent.render(delta, gc, this); }
+	public void render(GraphicsContext gc) { parent.render(gc, this); }
 	
 	public static final List<ObjectInstance> objInstances = new ArrayList<ObjectInstance>();
 	

@@ -17,11 +17,11 @@ public class GuiHandler {
 		this.state = state;
 	}
 	
-	public void drawElements(float delta, GraphicsContext gc) {
+	public void drawElements(GraphicsContext gc) {
 		for(GuiElement e : elements) {
 			if(!e.isHidden()) {
 				gc.save();
-				e.render(delta, gc);
+				e.render(gc);
 				gc.restore();
 			}
 		}

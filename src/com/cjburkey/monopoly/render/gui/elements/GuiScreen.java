@@ -15,8 +15,9 @@ public class GuiScreen extends GuiElement {
 	
 	private boolean pauses;
 	
-	public GuiScreen(Point2D pos, boolean pauses) {
-		super(new Rectangle2D(pos.getX() / 2, pos.getY() / 2, pos.getX(), pos.getY()));
+	public GuiScreen(Point2D size, boolean pauses) {
+		super(new Rectangle2D(Monopoly.canvasSize().getX() - size.getX() / 2 - Monopoly.canvasSize().getX() / 2,
+				Monopoly.canvasSize().getY() - size.getY() / 2 - Monopoly.canvasSize().getY() / 2, size.getX(), size.getY()));
 		this.pauses = pauses;
 	}
 	
@@ -38,14 +39,14 @@ public class GuiScreen extends GuiElement {
 		}
 	}
 	
-	public void render(float delta, GraphicsContext gc) {
+	public void render(GraphicsContext gc) {
 		gc.setFill(Color.rgb(0, 0, 0, 0.75d));
 		gc.fillRect(this.getPosition().getMinX(), this.getPosition().getMinY(), this.getPosition().getWidth(), this.getPosition().getHeight());
 		
 		for(GuiElement e : elements) {
 			if(!e.isHidden()) {
 				gc.save();
-				e.render(delta, gc);
+				e.render(gc);
 				gc.restore();
 			}
 		}

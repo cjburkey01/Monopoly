@@ -28,7 +28,7 @@ public class GuiLabel extends GuiElement {
 		this.center = center;
 	}
 	
-	public void render(float delta, GraphicsContext gc) {
+	public void render(GraphicsContext gc) {
 		gc.setTextBaseline(VPos.TOP);
 		gc.setFill(this.color);
 		gc.setFont(this.font);

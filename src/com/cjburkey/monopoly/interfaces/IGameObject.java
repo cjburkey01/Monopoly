@@ -9,8 +9,8 @@ public interface IGameObject {
 	public String getName();
 	public Point2D getSize();
 	public void onAdd(ObjectInstance inst);
-	public void tick(float delta, ObjectInstance inst);
+	public void tick(ObjectInstance inst);
 	public void perSecond(int fps, ObjectInstance inst);
-	public void render(float delta, GraphicsContext gc, ObjectInstance inst);
+	public void render(GraphicsContext gc, ObjectInstance inst);
 	
 }
