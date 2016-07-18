@@ -20,7 +20,7 @@ public class GameObjectGameBoard extends GameObject {
 	}
 	
 	public void onAdd(ObjectInstance inst) {
-		inst.position = inst.position.subtract(this.getSize().getX() / 2, this.getSize().getY() / 2);
+		inst.position = new Point2D(-this.getSize().getX() / 2, -this.getSize().getY() / 2);
 	}
 	
 	public void perSecond(int fps, ObjectInstance inst) {
@@ -33,7 +33,14 @@ public class GameObjectGameBoard extends GameObject {
 		gc.setStroke(Color.BLACK);
 		gc.strokeRect(pos.getMinX(), pos.getMinY(), pos.getWidth(), pos.getHeight());
 		gc.strokeRect(pos.getMinX() + 32, pos.getMinY() + 32, pos.getWidth() - 64, pos.getHeight() - 64);
-
+		
+		for(int i = 1; i < 11; i ++) {
+			gc.strokeLine(pos.getMinX() + (i * 32), pos.getMinY(), pos.getMinX() + (i * 32), pos.getMinY() + 32);
+			gc.strokeLine(pos.getMinX(), pos.getMinX() + (i * 32), pos.getMinX() + 32, pos.getMinX() + (i * 32));
+			gc.strokeLine(pos.getMinX() + (i * 32), pos.getMaxY(), pos.getMinX() + (i * 32), pos.getMaxY() - 32);
+			gc.strokeLine(pos.getMaxX(), pos.getMinX() + (i * 32), pos.getMaxX() - 32, pos.getMinX() + (i * 32));
+		}
+		
 		double x = pos.getMinX() + sizeWidth / 2;
 		double y = pos.getMinY() + sizeWidth / 2;
 		

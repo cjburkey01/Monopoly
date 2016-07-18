@@ -1,6 +1,8 @@
 package com.cjburkey.monopoly.state.states;
 
 import com.cjburkey.monopoly.Monopoly;
+import com.cjburkey.monopoly.gameloop.render.gui.GuiHandler;
+import com.cjburkey.monopoly.gameloop.render.gui.GuiLabel;
 import com.cjburkey.monopoly.handler.MouseHandler;
 import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
@@ -22,6 +24,7 @@ public class GameStateMainGame extends GameState {
 	private static float lastZoom;
 	private static int lastZoomTime = 4;
 	private static boolean checkZoom = false;
+	private static GuiHandler guiHandler;
 	
 	public static Point2D minMaxZoom = new Point2D(1.3, 3.8);
 	public static Point2D[] minMaxOffset = {
@@ -102,6 +105,14 @@ public class GameStateMainGame extends GameState {
 			zoom += e.getDeltaY() * 0.01;
 			checkZoom = true;
 		});
+		
+		guiHandler = new GuiHandler();
+		GuiHandler.addGuiHandler(guiHandler);
+		
+		GuiLabel l = new GuiLabel("Test message", new Point2D(0, 0));
+		guiHandler.addElement(l);
+		
+		l.show();
 	}
 	
 	public void exitState(GameState next) {  }

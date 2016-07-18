@@ -13,6 +13,8 @@ public class Logger {
 		this.owner = owner;
 	}
 	
+	public void lineBreak() { System.out.println(); }
+	
 	public void log(String msg) {
 		System.out.println("[" + owner + "] " + 
 				format
