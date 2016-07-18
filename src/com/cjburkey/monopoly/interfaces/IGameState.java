@@ -1,5 +1,6 @@
-package com.cjburkey.monopoly.state;
+package com.cjburkey.monopoly.interfaces;
 
+import com.cjburkey.monopoly.state.GameState;
 import javafx.scene.canvas.GraphicsContext;
 
 /**

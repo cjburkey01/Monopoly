@@ -2,13 +2,16 @@ package com.cjburkey.monopoly.object;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.cjburkey.monopoly.interfaces.IGameObject;
+import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
-public class GameObject {
+public class GameObject implements IGameObject {
 	
-	public String name;
-	public Point2D size;
+	private String name;
+	private Point2D size;
 	
 	public static GameObject gameObjectGameBoard;
 	
@@ -17,10 +20,13 @@ public class GameObject {
 		size = new Point2D(32, 32);
 	}
 	
-	public void onAdd(ObjInst inst) {  }
-	public void tick(float delta, ObjInst inst) {  }
-	public void perSecond(int fps, ObjInst inst) {  }
-	public void render(float delta, GraphicsContext gc, ObjInst inst) {  }
+	public void onAdd(ObjectInstance inst) {  }
+	public void tick(float delta, ObjectInstance inst) {  }
+	public void perSecond(int fps, ObjectInstance inst) {  }
+	public void render(float delta, GraphicsContext gc, ObjectInstance inst) {  }
+	public void setSize(Point2D size) { this.size = size; }
+	public String getName() { return this.name; }
+	public Point2D getSize() { return this.size; }
 	
 	public static final List<GameObject> gameObjs = new ArrayList<GameObject>();
 	

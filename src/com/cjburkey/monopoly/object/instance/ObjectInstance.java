@@ -1,16 +1,17 @@
-package com.cjburkey.monopoly.object;
+package com.cjburkey.monopoly.object.instance;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.cjburkey.monopoly.object.GameObject;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
-public class ObjInst {
+public class ObjectInstance {
 	
 	public GameObject parent;
 	public Point2D position;
 	
-	public ObjInst(GameObject parent) {
+	public ObjectInstance(GameObject parent) {
 		this.parent = parent;
 		this.position = new Point2D(0, 0);
 	}
@@ -24,10 +25,10 @@ public class ObjInst {
 	public void perSecond(int fps) { parent.perSecond(fps, this); }
 	public void render(float delta, GraphicsContext gc) { parent.render(delta, gc, this); }
 	
-	public static final List<ObjInst> objInstances = new ArrayList<ObjInst>();
+	public static final List<ObjectInstance> objInstances = new ArrayList<ObjectInstance>();
 	
-	public static final ObjInst createInstance(GameObject obj, Point2D pos) {
-		ObjInst inst = new ObjInst(obj);
+	public static final ObjectInstance createInstance(GameObject obj, Point2D pos) {
+		ObjectInstance inst = new ObjectInstance(obj);
 		inst.position = pos;
 		objInstances.add(inst);
 		inst.onAdd();

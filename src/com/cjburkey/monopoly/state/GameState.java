@@ -1,9 +1,10 @@
 package com.cjburkey.monopoly.state;
 
+import com.cjburkey.monopoly.interfaces.IGameState;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * Extend this class, DO NOT IMPLEMENT {@link com.cjburkey.monopoly.state.IGameState}
+ * Extend this class, DO NOT IMPLEMENT {@link com.cjburkey.monopoly.interfaces.IGameState}
  * @author cjburkey
  */
 @SuppressWarnings("deprecation")

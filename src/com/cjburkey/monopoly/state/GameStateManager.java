@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.cjburkey.monopoly.Monopoly;
 import com.cjburkey.monopoly.object.GameObject;
+import com.cjburkey.monopoly.state.states.GameStateMainGame;
+import com.cjburkey.monopoly.state.states.GameStateMainMenu;
 import javafx.scene.canvas.GraphicsContext;
 
 public class GameStateManager {

@@ -1,9 +1,11 @@
-package com.cjburkey.monopoly.state;
+package com.cjburkey.monopoly.state.states;
 
 import com.cjburkey.monopoly.Monopoly;
 import com.cjburkey.monopoly.handler.MouseHandler;
 import com.cjburkey.monopoly.object.GameObject;
-import com.cjburkey.monopoly.object.ObjInst;
+import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
+import com.cjburkey.monopoly.state.GameState;
 import com.cjburkey.monopoly.util.Maths;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,8 +25,8 @@ public class GameStateMainGame extends GameState {
 	
 	public static Point2D minMaxZoom = new Point2D(1.3, 3.8);
 	public static Point2D[] minMaxOffset = {
-		new Point2D(-176, 176),
-		new Point2D(-176, 176)
+		new Point2D(-GameObjectGameBoard.sizeWidth / 2, GameObjectGameBoard.sizeWidth / 2),
+		new Point2D(-GameObjectGameBoard.sizeWidth / 2, GameObjectGameBoard.sizeWidth / 2)
 	};
 	
 	public GameStateMainGame() {
@@ -32,13 +34,13 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	public void tick(float delta) {
-		for(ObjInst inst : ObjInst.objInstances) {
+		for(ObjectInstance inst : ObjectInstance.objInstances) {
 			inst.tick(delta);
 		}
 	}
 	
 	public void perSecond(int fps) {
-		for(ObjInst inst : ObjInst.objInstances) {
+		for(ObjectInstance inst : ObjectInstance.objInstances) {
 			inst.perSecond(fps);
 		}
 	}
@@ -67,7 +69,7 @@ public class GameStateMainGame extends GameState {
 		gc.scale(zoom, zoom);
 		gc.translate(offset.getX(), offset.getY());
 		
-		for(ObjInst inst : ObjInst.objInstances) {
+		for(ObjectInstance inst : ObjectInstance.objInstances) {
 			inst.render(delta, gc);
 		}
 		
@@ -76,7 +78,7 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	public void enterState(GameState previous) {
-		ObjInst.createInstance(GameObject.gameObjectGameBoard, Point2D.ZERO);
+		ObjectInstance.createInstance(GameObject.gameObjectGameBoard, Point2D.ZERO);
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
 			if(e.getButton().equals(MouseButton.MIDDLE)) {
 				MouseHandler.cursor = MouseHandler.MOVE;
@@ -97,7 +99,7 @@ public class GameStateMainGame extends GameState {
 		});
 		
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(ScrollEvent.SCROLL, e -> {
-			zoom += e.getDeltaY() * 0.001;
+			zoom += e.getDeltaY() * 0.01;
 			checkZoom = true;
 		});
 	}

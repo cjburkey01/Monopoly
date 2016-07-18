@@ -1,6 +1,7 @@
-package com.cjburkey.monopoly.state;
+package com.cjburkey.monopoly.state.states;
 
 import com.cjburkey.monopoly.Monopoly;
+import com.cjburkey.monopoly.state.GameState;
 import javafx.scene.canvas.GraphicsContext;
 
 public class GameStateMainMenu extends GameState {
