@@ -16,6 +16,7 @@ public class Player {
 	private int turn = 0;
 	private int place = 0;
 	private int rounds = 0;
+	private int ds = 0;
 	
 	public Player(String name, ObjectInstance inst) {
 		this.name = name;
@@ -23,6 +24,18 @@ public class Player {
 		money = PlayerBill.getDefaultStartingBills();
 		
 		this.inst.setData("playerColor", Color.rgb(Maths.randomRange(0, 255), Maths.randomRange(0, 255), Maths.randomRange(0, 255), 0.4d));
+	}
+	
+	public void resetDoubles() {
+		ds = 0;
+	}
+	
+	public void doubles() {
+		ds ++;
+		if(ds >= 3) {
+			ds = 0;
+			putInJail();
+		}
 	}
 	
 	public void setName(String name) { this.name = name; }

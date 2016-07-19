@@ -2,7 +2,6 @@ package com.cjburkey.monopoly.turn;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
@@ -40,7 +39,7 @@ public class TurnManager {
 		dice[0].setData("gameObjectDice-shown", nums[0] = Maths.randomRange(1, 6));
 		dice[1].setData("gameObjectDice-shown", nums[1] = Maths.randomRange(1, 6));
 		if(setCooldown) {
-			((GameStateMainGame) GameStateManager.mainGame).cooldown = 2000;
+			((GameStateMainGame) GameStateManager.mainGame).cooldown = 75;
 		}
 		return nums;
 	}

@@ -26,12 +26,12 @@ import javafx.scene.text.Font;
 
 public class GameStateMainGame extends GameState {
 	
-	private Point2D offset = Point2D.ZERO;
-	private float zoom = 0.5f;
+	public Point2D offset = Point2D.ZERO;
+	public float zoom = 1f;
 	
 	private Point2D mouse;
 	private float lastZoom;
-	private int lastZoomTime = 4;
+	private int lastZoomTime = 2;
 	private boolean checkZoom = false;
 	private GuiHandler guiHandler;
 	private TurnManager turns;
@@ -42,7 +42,7 @@ public class GameStateMainGame extends GameState {
 	private GuiButton roll;
 	private GuiButton next;
 	
-	public int cooldown = 2000;
+	public int cooldown = 75;
 	
 	public Point2D minMaxZoom = new Point2D(0.6f, 1.3);
 	public Point2D[] minMaxOffset = {
@@ -78,7 +78,7 @@ public class GameStateMainGame extends GameState {
 				Maths.clamp(offset.getY(), minMaxOffset[1].getX(), minMaxOffset[1].getY()));
 		
 		if(lastZoomTime <= 0) {
-			lastZoomTime = 4;
+			lastZoomTime = 2;
 			if(checkZoom) {
 				if(lastZoom == zoom) {
 					checkZoom = false;
@@ -102,8 +102,6 @@ public class GameStateMainGame extends GameState {
 			gc.restore();
 		}
 		
-		gc.translate(-offset.getX(), -offset.getY());
-		gc.scale(1 / zoom, 1 / zoom);
 		
 		gc.restore();
 		
@@ -238,17 +236,17 @@ public class GameStateMainGame extends GameState {
 		GuiButton exit = new GuiButton(new Point2D(2, 2), () -> { gotoMenuScreen.show(); }, "Main Menu", 15);
 		
 		roll = new GuiButton(new Point2D(2, 2 + exit.getPosition().getMinY() + exit.getPosition().getHeight()), () -> {
-			if(cooldown <= 0) {
-				int[] dice = turns.rollDice(true);
-				int total = dice[0] + dice[1];
-				turns.getCurrentPlayer().moveForward(total);
-				
-				if(dice[0] != dice[1]) {
-					next.show();
-					roll.hide();
-				} else {
-					Monopoly.log("DOUBLES!");
-				}
+			int[] dice = turns.rollDice(true);
+			int total = dice[0] + dice[1];
+			turns.getCurrentPlayer().moveForward(total);
+			
+			if(dice[0] != dice[1]) {
+				next.show();
+				roll.hide();
+				turns.getCurrentPlayer().resetDoubles();
+			} else {
+				Monopoly.log("DOUBLES!");
+				turns.getCurrentPlayer().doubles();
 			}
 		}, "Roll Dice", 15);
 		
