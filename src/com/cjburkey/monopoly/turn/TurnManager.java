@@ -8,6 +8,7 @@ import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
 import com.cjburkey.monopoly.state.GameStateManager;
 import com.cjburkey.monopoly.state.states.GameStateMainGame;
+import com.cjburkey.monopoly.util.Maths;
 import javafx.geometry.Point2D;
 
 public class TurnManager {
@@ -36,8 +37,8 @@ public class TurnManager {
 	
 	public final int[] rollDice(boolean setCooldown) {
 		int[] nums = new int[2];
-		dice[0].setData("gameObjectDice-shown", nums[0] = ThreadLocalRandom.current().nextInt(1, 7));
-		dice[1].setData("gameObjectDice-shown", nums[1] = ThreadLocalRandom.current().nextInt(1, 7));
+		dice[0].setData("gameObjectDice-shown", nums[0] = Maths.randomRange(1, 6));
+		dice[1].setData("gameObjectDice-shown", nums[1] = Maths.randomRange(1, 6));
 		if(setCooldown) {
 			((GameStateMainGame) GameStateManager.mainGame).cooldown = 2000;
 		}

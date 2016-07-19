@@ -132,7 +132,7 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	private void turnsGui() {
-		GuiScreen selectionWindow = new GuiScreen(new Point2D(Monopoly.canvasSize().getX() / 1.5, Monopoly.canvasSize().getX() / 1.5), true);
+		GuiScreen selectionWindow = new GuiScreen(new Point2D(Monopoly.canvasSize().getX() / 1.5, Monopoly.canvasSize().getY() / 1.5), true);
 		GuiButtonCentered plus = new GuiButtonCentered(Point2D.ZERO, () -> { players ++; }, "+", 5d, 50d);
 		GuiButtonCentered minus = new GuiButtonCentered(Point2D.ZERO, () -> { players --; }, "-", 5d, 50d);
 		GuiButtonCentered go = new GuiButtonCentered(Point2D.ZERO,
@@ -147,9 +147,9 @@ public class GameStateMainGame extends GameState {
 		
 		plus.setPosition(new Point2D(Monopoly.canvasSize().getX() / 2 - plus.getPosition().getWidth() / 2,
 				selectionWindow.getPosition().getMinY() + plus.getPosition().getWidth() / 2 + 10));
-		minus.setPosition(new Point2D(Monopoly.canvasSize().getX() / 2 / 2 + minus.getPosition().getWidth() / 2,
+		minus.setPosition(new Point2D(Monopoly.canvasSize().getX() / 2 + minus.getPosition().getWidth() / 2,
 				selectionWindow.getPosition().getMinY() + minus.getPosition().getWidth() / 2 + 10));
-		go.setPosition(new Point2D(Monopoly.canvasSize().getX() / 2 / 2,
+		go.setPosition(new Point2D(Monopoly.canvasSize().getX() / 2,
 				selectionWindow.getPosition().getMinY() + selectionWindow.getPosition().getHeight() - go.getPosition().getHeight() / 2 - 10));
 
 		plus.setColorScheme(Color.WHITE, Color.rgb(0, 100, 0), Color.WHITE, Color.rgb(0, 150, 0));
