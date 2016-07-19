@@ -20,11 +20,11 @@ public class GameObjectGameBoard extends GameObject {
 	}
 	
 	public void onAdd(ObjectInstance inst) {
-		inst.position = new Point2D(-this.getSize().getX() / 2, -this.getSize().getY() / 2);
+		inst.setPos(new Point2D(-this.getSize().getX() / 2, -this.getSize().getY() / 2));
 	}
 	
 	public void render(GraphicsContext gc, ObjectInstance inst) {
-		Rectangle2D pos = new Rectangle2D(inst.getPosition().getX(), inst.getPosition().getY(), this.getSize().getX(), this.getSize().getY());
+		Rectangle2D pos = new Rectangle2D(inst.getPos().getX(), inst.getPos().getY(), this.getSize().getX(), this.getSize().getY());
 		
 		gc.setStroke(Color.BLACK);
 		gc.strokeRect(pos.getMinX(), pos.getMinY(), pos.getWidth(), pos.getHeight());

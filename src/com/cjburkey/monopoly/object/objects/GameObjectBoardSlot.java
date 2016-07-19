@@ -29,9 +29,9 @@ public class GameObjectBoardSlot extends GameObject {
 		gc.setFill(Color.BLACK);
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
-		gc.fillText(id + "", inst.getPosition().getX() + this.getSize().getX() / 2, inst.getPosition().getY() + this.getSize().getY() / 2);
-		gc.setFill(Color.rgb(255, 0, 0, 0.2d));
-		gc.fillRect(inst.getPosition().getX(), inst.getPosition().getY(), this.getSize().getX(), this.getSize().getY());
+		gc.fillText(id + "", inst.getPos().getX() + this.getSize().getX() / 2, inst.getPos().getY() + this.getSize().getY() / 2);
+		//gc.setFill(Color.rgb(255, 0, 0, 0.2d));
+		//gc.fillRect(inst.getPosition().getX(), inst.getPosition().getY(), this.getSize().getX(), this.getSize().getY());
 	}
 	
 }

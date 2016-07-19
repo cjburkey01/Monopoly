@@ -5,6 +5,8 @@ import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class GameObjectPlayer extends GameObject {
 	
@@ -14,7 +16,23 @@ public class GameObjectPlayer extends GameObject {
 	}
 	
 	public void render(GraphicsContext gc, ObjectInstance inst) {
-		gc.drawImage(TextureManager.imgIconPerson, inst.getPosition().getX() + 16, inst.getPosition().getY() + 16,
+		Object data = inst.getData("currentPlayer");
+		if(data != null && data instanceof Boolean) {
+			boolean current = (boolean) data;
+			if(current) {
+				gc.setStroke(Color.gray(0.5d));
+				gc.setLineWidth(5d);
+				gc.strokeRect(inst.getPos().getX() + 16, inst.getPos().getY() + 16, GameObjectGameBoard.pixelPerTile - 32, GameObjectGameBoard.pixelPerTile - 32);
+			}
+		}
+		
+		Object c = inst.getData("playerColor");
+		if(c != null && c instanceof Paint) {
+			gc.setFill((Paint) c);
+			gc.fillRect(inst.getPos().getX() + 16, inst.getPos().getY() + 16, GameObjectGameBoard.pixelPerTile - 32, GameObjectGameBoard.pixelPerTile - 32);
+		}
+		
+		gc.drawImage(TextureManager.imgIconPerson, inst.getPos().getX() + 16, inst.getPos().getY() + 16,
 				GameObjectGameBoard.pixelPerTile - 32, GameObjectGameBoard.pixelPerTile - 32);
 	}
 	

@@ -17,7 +17,6 @@ import com.cjburkey.monopoly.turn.TurnManager;
 import com.cjburkey.monopoly.util.Maths;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -27,17 +26,26 @@ import javafx.scene.text.Font;
 
 public class GameStateMainGame extends GameState {
 	
-	private static Point2D offset = Point2D.ZERO;
-	private static float zoom = 0.5f;
+	private Point2D offset = Point2D.ZERO;
+	private float zoom = 0.5f;
 	
-	private static Point2D mouse;
-	private static float lastZoom;
-	private static int lastZoomTime = 4;
-	private static boolean checkZoom = false;
-	private static GuiHandler guiHandler;
+	private Point2D mouse;
+	private float lastZoom;
+	private int lastZoomTime = 4;
+	private boolean checkZoom = false;
+	private GuiHandler guiHandler;
+	private TurnManager turns;
 	
-	public static Point2D minMaxZoom = new Point2D(0.6f, 1.3);
-	public static Point2D[] minMaxOffset = {
+	private int players = 2;
+	private GuiLabel playerLabel;
+	private GuiLabel currentPlayer;
+	private GuiButton roll;
+	private GuiButton next;
+	
+	public int cooldown = 2000;
+	
+	public Point2D minMaxZoom = new Point2D(0.6f, 1.3);
+	public Point2D[] minMaxOffset = {
 		new Point2D(-GameObjectGameBoard.sizeWidth / 2, GameObjectGameBoard.sizeWidth / 2),
 		new Point2D(-GameObjectGameBoard.sizeWidth / 2, GameObjectGameBoard.sizeWidth / 2)
 	};
@@ -49,6 +57,10 @@ public class GameStateMainGame extends GameState {
 	public void tick() {
 		for(ObjectInstance inst : ObjectInstance.objInstances) {
 			inst.tick();
+		}
+		
+		if(cooldown > 0) {
+			cooldown --;
 		}
 	}
 	
@@ -98,36 +110,53 @@ public class GameStateMainGame extends GameState {
 		players = (int) Maths.clamp(players, 2, 8);
 		playerLabel.setText(players + " Players");
 		
-		if(currentPlayer != null && TurnManager.getCurrentPlayer() != null)
-			currentPlayer.setText(TurnManager.getCurrentPlayer().getName() + "'s Turn!");
-	}
-
-	int players = 2;
-	GuiLabel playerLabel;
-	GuiButton exit;
-	private void initTurns() {
-		Canvas canvas = Monopoly.getWindow().getScene().getGameCanvas();
-		GuiScreen selectionWindow = new GuiScreen(new Point2D(canvas.getWidth() / 1.5, canvas.getHeight() / 1.5), true);
-		guiHandler.addElement(selectionWindow);
+		if(currentPlayer != null && turns.getCurrentPlayer() != null)
+			currentPlayer.setText(turns.getCurrentPlayer().getName() + "'s Turn!");
 		
+		for(int i = 0; i < turns.bills.length; i ++) {
+			if(turns.getCurrentPlayer() != null)
+				turns.bills[i].setData("gameObjectBill-bill", turns.getCurrentPlayer().getAmountOfBillFromId(i));
+		}
+		
+		for(Player p : turns.getPlayers()) {
+			if(p.equals(turns.getCurrentPlayer())) {
+				p.getInst().setData("currentPlayer", true);
+			} else {
+				p.getInst().setData("currentPlayer", false);
+			}
+		}
+	}
+	
+	private void initTurns() {
+		turnsGui();
+	}
+	
+	private void turnsGui() {
+		GuiScreen selectionWindow = new GuiScreen(new Point2D(Monopoly.canvasSize().getX() / 1.5, Monopoly.canvasSize().getX() / 1.5), true);
 		GuiButtonCentered plus = new GuiButtonCentered(Point2D.ZERO, () -> { players ++; }, "+", 5d, 50d);
 		GuiButtonCentered minus = new GuiButtonCentered(Point2D.ZERO, () -> { players --; }, "-", 5d, 50d);
 		GuiButtonCentered go = new GuiButtonCentered(Point2D.ZERO,
-				() -> { setupGame(players); currentPlayer.show(); exit.show(); selectionWindow.hide(); }, "Start Game", 5d);
+				() -> {
+					setupGame(players);
+					initInGame();
+					selectionWindow.hide();
+				}, "Start Game", 5d);
 		
-		playerLabel = new GuiLabel(players + " Players", new Point2D(canvas.getWidth() / 2,
+		playerLabel = new GuiLabel(players + " Players", new Point2D(Monopoly.canvasSize().getX() / 2,
 				selectionWindow.getPosition().getMinY() + go.getPosition().getHeight() + 25), Font.font(45), Color.WHITE, true);
 		
-		plus.setPosition(new Point2D(canvas.getWidth() / 2 - plus.getPosition().getWidth() / 2,
+		plus.setPosition(new Point2D(Monopoly.canvasSize().getX() / 2 - plus.getPosition().getWidth() / 2,
 				selectionWindow.getPosition().getMinY() + plus.getPosition().getWidth() / 2 + 10));
-		minus.setPosition(new Point2D(canvas.getWidth() / 2 + minus.getPosition().getWidth() / 2,
+		minus.setPosition(new Point2D(Monopoly.canvasSize().getX() / 2 / 2 + minus.getPosition().getWidth() / 2,
 				selectionWindow.getPosition().getMinY() + minus.getPosition().getWidth() / 2 + 10));
-		go.setPosition(new Point2D(canvas.getWidth() / 2,
+		go.setPosition(new Point2D(Monopoly.canvasSize().getX() / 2 / 2,
 				selectionWindow.getPosition().getMinY() + selectionWindow.getPosition().getHeight() - go.getPosition().getHeight() / 2 - 10));
 
 		plus.setColorScheme(Color.WHITE, Color.rgb(0, 100, 0), Color.WHITE, Color.rgb(0, 150, 0));
 		minus.setColorScheme(Color.WHITE, Color.rgb(100, 0, 0), Color.WHITE, Color.rgb(150, 0, 0));
 		go.setColorScheme(Color.WHITE, Color.rgb(0, 0, 100), Color.WHITE, Color.rgb(0, 0, 150));
+		
+		guiHandler.addElement(selectionWindow);
 		
 		selectionWindow.addElement(plus);
 		selectionWindow.addElement(minus);
@@ -157,17 +186,18 @@ public class GameStateMainGame extends GameState {
 		for(int i = 0; i < players; i ++) {
 			Object fromInst = ObjectInstance.getInstFromId(0);
 			if(fromInst != null) {
-				Player p = new Player("Player " + (i + 1), ObjectInstance.createInstance(GameObject.gameObjectPlayer, ((ObjectInstance) fromInst).getPosition()));
-				TurnManager.addPlayer(p);
+				Player p = new Player("Player " + (i + 1), ObjectInstance.createInstance(GameObject.gameObjectPlayer, ((ObjectInstance) fromInst).getPos()));
+				turns.addPlayer(p);
 			}
 		}
 		
-		TurnManager.startGame();
+		turns.startGame();
 	}
 	
-	GuiLabel currentPlayer;
 	public void enterState(GameState previous) {
 		ObjectInstance.createInstance(GameObject.gameObjectGameBoard, Point2D.ZERO);
+		turns = new TurnManager();
+		
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
 			if(!Monopoly.guiScreenOpen && e.getButton().equals(MouseButton.MIDDLE)) {
 				MouseHandler.cursor = MouseHandler.MOVE;
@@ -192,39 +222,80 @@ public class GameStateMainGame extends GameState {
 			}
 		});
 		
+		initGui();
+		initTurns();
+	}
+	
+	private void initGui() {
 		guiHandler = new GuiHandler(this);
 		GuiHandler.addGuiHandler(guiHandler);
 		
-		initTurns();
+		initGotoMenu();
+	}
+	
+	GuiScreen gotoMenuScreen;
+	private void initInGame() {
+		GuiButton exit = new GuiButton(new Point2D(2, 2), () -> { gotoMenuScreen.show(); }, "Main Menu", 15);
 		
-		Canvas canvas = Monopoly.getWindow().getScene().getGameCanvas();
-		GuiScreen screen = new GuiScreen(new Point2D(canvas.getWidth() / 2, canvas.getHeight() / 2), true);
-		guiHandler.addElement(screen);
+		roll = new GuiButton(new Point2D(2, 2 + exit.getPosition().getMinY() + exit.getPosition().getHeight()), () -> {
+			if(cooldown <= 0) {
+				int[] dice = turns.rollDice(true);
+				int total = dice[0] + dice[1];
+				turns.getCurrentPlayer().moveForward(total);
+				
+				if(dice[0] != dice[1]) {
+					next.show();
+					roll.hide();
+				} else {
+					Monopoly.log("DOUBLES!");
+				}
+			}
+		}, "Roll Dice", 15);
 		
-		GuiLabel label = new GuiLabel("Go to main menu?", new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
-				screen.getPosition().getMinY() + 10), Font.font(24), Color.WHITE, true);
-		screen.addElement(label);
-		
-		GuiButtonCentered no = new GuiButtonCentered(new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
-				screen.getPosition().getMinY() + screen.getPosition().getHeight() - 100), () -> {
-					screen.hide();
-				}, "No", 5, screen.getPosition().getWidth() / 1.2);
-		screen.addElement(no);
-		no.setColorScheme(Color.WHITE, Color.rgb(0, 0, 100), Color.WHITE, Color.rgb(0, 0, 150));
-		
-		GuiButtonCentered yes = new GuiButtonCentered(new Point2D(screen.getPosition().getMinX() + screen.getPosition().getWidth() / 2,
-			no.getPosition().getMinY() + no.getPosition().getHeight() * 1.5), () -> {
-				Monopoly.getStateManager().setGameState(GameStateManager.mainMenu);
-			}, "Yes", 5, screen.getPosition().getWidth() / 1.2);
-		screen.addElement(yes);
-		yes.setColorScheme(Color.WHITE, Color.rgb(100, 0, 0), Color.WHITE, Color.rgb(150, 0, 0));
-		
-		exit = new GuiButton(new Point2D(2, 2), () -> { screen.show(); }, "Main Menu", 15);
-		guiHandler.addElement(exit);
+		next = new GuiButton(new Point2D(2, 2 + roll.getPosition().getMinY() + roll.getPosition().getHeight()), () -> {
+			if(cooldown <= 0) {
+				roll.show();
+				next.hide();
+				
+				turns.nextTurn();
+			}
+		}, "Next Turn", 15);
 		
 		currentPlayer = new GuiLabel("player.turn", new Point2D(Monopoly.canvasSize().getX() / 2,
 				Monopoly.canvasSize().getY() - 24), Font.font(48), Color.BLACK, true, VPos.BOTTOM);
+		
+		guiHandler.addElement(exit);
+		guiHandler.addElement(roll);
+		guiHandler.addElement(next);
 		guiHandler.addElement(currentPlayer);
+		
+		exit.show();
+		roll.show();
+		currentPlayer.show();
+	}
+	
+	private void initGotoMenu() {
+		gotoMenuScreen = new GuiScreen(new Point2D(Monopoly.canvasSize().getX() / 2, Monopoly.canvasSize().getY() / 2), true);
+		guiHandler.addElement(gotoMenuScreen);
+		
+		GuiLabel label = new GuiLabel("Go to main menu?", new Point2D(gotoMenuScreen.getPosition().getMinX() + gotoMenuScreen.getPosition().getWidth() / 2,
+				gotoMenuScreen.getPosition().getMinY() + 10), Font.font(24), Color.WHITE, true);
+		
+		GuiButtonCentered no = new GuiButtonCentered(new Point2D(gotoMenuScreen.getPosition().getMinX() + gotoMenuScreen.getPosition().getWidth() / 2,
+				gotoMenuScreen.getPosition().getMinY() + gotoMenuScreen.getPosition().getHeight() - 100), () -> {
+					gotoMenuScreen.hide();
+				}, "No", 5, gotoMenuScreen.getPosition().getWidth() / 1.2);
+		no.setColorScheme(Color.WHITE, Color.rgb(0, 0, 100), Color.WHITE, Color.rgb(0, 0, 150));
+		
+		GuiButtonCentered yes = new GuiButtonCentered(new Point2D(gotoMenuScreen.getPosition().getMinX() + gotoMenuScreen.getPosition().getWidth() / 2,
+			no.getPosition().getMinY() + no.getPosition().getHeight() * 1.5), () -> {
+				Monopoly.getStateManager().setGameState(GameStateManager.mainMenu);
+			}, "Yes", 5, gotoMenuScreen.getPosition().getWidth() / 1.2);
+		yes.setColorScheme(Color.WHITE, Color.rgb(100, 0, 0), Color.WHITE, Color.rgb(150, 0, 0));
+		
+		gotoMenuScreen.addElement(label);
+		gotoMenuScreen.addElement(no);
+		gotoMenuScreen.addElement(yes);
 	}
 	
 	public void exitState(GameState next) {

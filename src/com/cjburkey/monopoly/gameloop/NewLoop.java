@@ -30,7 +30,7 @@ public class NewLoop {
 				fps ++;
 				long currenttimeNano = System.nanoTime();
 				if(currenttimeNano > lasttimeFPS + 1000000000) {
-					Monopoly.log(fps + " FPS");
+					//Monopoly.log(fps + " FPS");
 					fps = 0;
 					lasttimeFPS = currenttimeNano;
 				}

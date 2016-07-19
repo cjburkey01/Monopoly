@@ -19,7 +19,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
- * Pre-patch 12
+ * Pre-patch 13
  * @author CJ Burkey
  */
 public class Monopoly extends Application {
@@ -86,7 +86,7 @@ public class Monopoly extends Application {
 	public void start(Stage s) {
 		try {
 			final Rectangle2D size = Screen.getPrimary().getVisualBounds();
-			init(s, size.getWidth() / 1, size.getHeight() / 1);
+			init(s, size.getWidth() / 1.1, size.getHeight() / 1.1);
 			
 			try {
 				getLogger().lineBreak();
@@ -133,7 +133,7 @@ public class Monopoly extends Application {
 		getLogger().log("\t--[ START DETAILED REPORT ]--", true);
 		
 		for(StackTraceElement e : t.getStackTrace()) {
-			System.err.println("\tat: " + e.getClassName() + "." + e.getMethodName());
+			System.err.println("\tat: " + e.getClassName() + "." + e.getMethodName() + ":" + e.getLineNumber());
 		}
 		getLogger().log("\t--[ END DETAILED REPORT ]--", true);
 		System.exit(-1);

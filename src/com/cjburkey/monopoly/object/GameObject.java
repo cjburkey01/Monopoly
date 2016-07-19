@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.cjburkey.monopoly.interfaces.IGameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.objects.GameObjectBill;
 import com.cjburkey.monopoly.object.objects.GameObjectBoardSlot;
 import com.cjburkey.monopoly.object.objects.GameObjectDice;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
@@ -20,6 +21,7 @@ public class GameObject implements IGameObject {
 	public static GameObject gameObjectBoardSlot;
 	public static GameObject gameObjectPlayer;
 	public static GameObject gameObjectDice;
+	public static GameObject gameObjectBill;
 	
 	public GameObject(String name) {
 		this.name = name;
@@ -41,6 +43,7 @@ public class GameObject implements IGameObject {
 		gameObjectBoardSlot = new GameObjectBoardSlot();
 		gameObjectPlayer = new GameObjectPlayer();
 		gameObjectDice = new GameObjectDice();
+		gameObjectBill = new GameObjectBill();
 	}
 	
 }
