@@ -236,17 +236,19 @@ public class GameStateMainGame extends GameState {
 		GuiButton exit = new GuiButton(new Point2D(2, 2), () -> { gotoMenuScreen.show(); }, "Main Menu", 15);
 		
 		roll = new GuiButton(new Point2D(2, 2 + exit.getPosition().getMinY() + exit.getPosition().getHeight()), () -> {
-			int[] dice = turns.rollDice(true);
-			int total = dice[0] + dice[1];
-			turns.getCurrentPlayer().moveForward(total);
-			
-			if(dice[0] != dice[1]) {
-				next.show();
-				roll.hide();
-				turns.getCurrentPlayer().resetDoubles();
-			} else {
-				Monopoly.log("DOUBLES!");
-				turns.getCurrentPlayer().doubles();
+			if(cooldown <= 0) {
+				int[] dice = turns.rollDice(true);
+				int total = dice[0] + dice[1];
+				turns.getCurrentPlayer().moveForward(total);
+				
+				if(dice[0] != dice[1]) {
+					next.show();
+					roll.hide();
+					turns.getCurrentPlayer().resetDoubles();
+				} else {
+					Monopoly.log("DOUBLES!");
+					turns.getCurrentPlayer().doubles();
+				}
 			}
 		}, "Roll Dice", 15);
 		
