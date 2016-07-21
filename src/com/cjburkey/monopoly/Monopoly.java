@@ -2,7 +2,7 @@ package com.cjburkey.monopoly;
 
 import java.util.Scanner;
 import com.cjburkey.monopoly.gameloop.NewLoop;
-import com.cjburkey.monopoly.handler.MouseHandler;
+import com.cjburkey.monopoly.handler.CursorHandler;
 import com.cjburkey.monopoly.img.TextureManager;
 import com.cjburkey.monopoly.render.gui.GuiHandler;
 import com.cjburkey.monopoly.state.GameStateManager;
@@ -10,16 +10,18 @@ import com.cjburkey.monopoly.util.Logger;
 import com.cjburkey.monopoly.util.SemVer;
 import com.cjburkey.monopoly.window.GameScene;
 import com.cjburkey.monopoly.window.GameWindow;
+import com.sun.javafx.tk.Toolkit;
 import javafx.application.Application;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
- * Pre-patch 17
+ * Pre-patch 18
  * @author CJ Burkey
  */
 public class Monopoly extends Application {
@@ -35,6 +37,14 @@ public class Monopoly extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	public static final float widthOfText(String text, Font font) {
+		return Toolkit.getToolkit().getFontLoader().computeStringWidth(text, font);
+	}
+	
+	public static final float heightOfText(String text, Font font) {
+		return Toolkit.getToolkit().getFontLoader().getFontMetrics(font).getLineHeight();
 	}
 	
 	private void asciiArt() throws Exception {
@@ -99,7 +109,7 @@ public class Monopoly extends Application {
 	}
 	
 	public static final void tick() {
-		getWindow().getScene().setCursor(MouseHandler.getCursor(MouseHandler.cursor));
+		getWindow().getScene().setCursor(CursorHandler.getCursor(CursorHandler.cursor));
 		getStateManager().tick();
 	}
 	

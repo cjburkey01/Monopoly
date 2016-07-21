@@ -2,7 +2,7 @@ package com.cjburkey.monopoly.state.states;
 
 import com.cjburkey.monopoly.Monopoly;
 import com.cjburkey.monopoly.building.Property;
-import com.cjburkey.monopoly.handler.MouseHandler;
+import com.cjburkey.monopoly.handler.CursorHandler;
 import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.GameObjectInst;
 import com.cjburkey.monopoly.object.objects.GameObjectBoardSlot;
@@ -12,6 +12,7 @@ import com.cjburkey.monopoly.render.gui.elements.GuiButton;
 import com.cjburkey.monopoly.render.gui.elements.GuiButtonCentered;
 import com.cjburkey.monopoly.render.gui.elements.GuiLabel;
 import com.cjburkey.monopoly.render.gui.elements.GuiScreen;
+import com.cjburkey.monopoly.render.gui.elements.GuiScreenGiveMoney;
 import com.cjburkey.monopoly.state.GameState;
 import com.cjburkey.monopoly.state.GameStateManager;
 import com.cjburkey.monopoly.turn.Player;
@@ -56,6 +57,12 @@ public class GameStateMainGame extends GameState {
 		super("gameStateMainGame");
 	}
 	
+	public void showMoneyScreen(String title, int owed, Player from, Player to) {
+		GuiScreenGiveMoney screen = new GuiScreenGiveMoney(title, owed, from, to);
+		this.guiHandler.addElement(screen);
+		screen.show();
+	}
+	
 	public void tick() {
 		for(GameObjectInst inst : GameObjectInst.objInstances) {
 			inst.tick();
@@ -84,10 +91,10 @@ public class GameStateMainGame extends GameState {
 			if(checkZoom) {
 				if(lastZoom == zoom) {
 					checkZoom = false;
-					MouseHandler.cursor = MouseHandler.NORMAL;
+					CursorHandler.cursor = CursorHandler.NORMAL;
 				} else {
 					checkZoom = true;
-					MouseHandler.cursor = MouseHandler.ZOOM;
+					CursorHandler.cursor = CursorHandler.ZOOM;
 				}
 			}
 		}
@@ -114,8 +121,10 @@ public class GameStateMainGame extends GameState {
 			currentPlayer.setText(turns.getCurrentPlayer().getName() + "'s Turn!");
 		
 		for(int i = 0; i < turns.bills.length; i ++) {
-			if(turns.getCurrentPlayer() != null)
-				turns.bills[i].setData("gameObjectBill-bill", turns.getCurrentPlayer().getAmountOfBillFromId(i));
+			if(turns.getCurrentPlayer() != null) {
+				turns.bills[i].setData("gameObjectBill-worth", turns.getCurrentPlayer().getMoney().idToWorth(i));
+				turns.bills[i].setData("gameObjectBill-amount", turns.getCurrentPlayer().getMoney().idToAmount(i));
+			}
 		}
 		
 		for(Player p : turns.getPlayers()) {
@@ -132,7 +141,7 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	private void turnsGui() {
-		GuiScreen selectionWindow = new GuiScreen(new Point2D(Monopoly.canvasSize().getX() / 1.5, Monopoly.canvasSize().getY() / 1.5), true);
+		GuiScreen selectionWindow = new GuiScreen(new Point2D(Monopoly.canvasSize().getX() / 1.5, Monopoly.canvasSize().getY() / 1.5));
 		GuiButtonCentered plus = new GuiButtonCentered(Point2D.ZERO, () -> { players ++; }, "+", 5d, 50d);
 		GuiButtonCentered minus = new GuiButtonCentered(Point2D.ZERO, () -> { players --; }, "-", 5d, 50d);
 		GuiButtonCentered go = new GuiButtonCentered(Point2D.ZERO,
@@ -202,7 +211,7 @@ public class GameStateMainGame extends GameState {
 		
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
 			if(!Monopoly.guiScreenOpen && e.getButton().equals(MouseButton.MIDDLE)) {
-				MouseHandler.cursor = MouseHandler.MOVE;
+				CursorHandler.cursor = CursorHandler.MOVE;
 				Point2D now = new Point2D(e.getX() / zoom, e.getY() / zoom);
 				if(mouse != null) {
 					Point2D diff = now.subtract(mouse);
@@ -214,7 +223,7 @@ public class GameStateMainGame extends GameState {
 		
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
 			mouse = null;
-			MouseHandler.cursor = MouseHandler.NORMAL;
+			CursorHandler.cursor = CursorHandler.NORMAL;
 		});
 		
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(ScrollEvent.SCROLL, e -> {
@@ -279,7 +288,7 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	private void initGotoMenu() {
-		gotoMenuScreen = new GuiScreen(new Point2D(Monopoly.canvasSize().getX() / 2, Monopoly.canvasSize().getY() / 2), true);
+		gotoMenuScreen = new GuiScreen(new Point2D(Monopoly.canvasSize().getX() / 2, Monopoly.canvasSize().getY() / 2));
 		guiHandler.addElement(gotoMenuScreen);
 		
 		GuiLabel label = new GuiLabel("Go to main menu?", new Point2D(gotoMenuScreen.getPosition().getMinX() + gotoMenuScreen.getPosition().getWidth() / 2,

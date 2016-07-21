@@ -13,15 +13,10 @@ public class GuiScreen extends GuiElement {
 	
 	private final List<GuiElement> elements = new ArrayList<GuiElement>();
 	
-	private boolean pauses;
-	
-	public GuiScreen(Point2D size, boolean pauses) {
+	public GuiScreen(Point2D size) {
 		super(new Rectangle2D(Monopoly.canvasSize().getX() - size.getX() / 2 - Monopoly.canvasSize().getX() / 2,
 				Monopoly.canvasSize().getY() - size.getY() / 2 - Monopoly.canvasSize().getY() / 2, size.getX(), size.getY()));
-		this.pauses = pauses;
 	}
-	
-	public boolean doesPause() { return this.pauses; }
 	
 	public void show() {
 		super.show();

@@ -1,7 +1,7 @@
 package com.cjburkey.monopoly.render.gui.elements;
 
 import com.cjburkey.monopoly.Monopoly;
-import com.cjburkey.monopoly.handler.MouseHandler;
+import com.cjburkey.monopoly.handler.CursorHandler;
 import com.cjburkey.monopoly.render.gui.GuiElement;
 import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
@@ -89,9 +89,9 @@ public class GuiButton extends GuiElement {
 			Point2D point = new Point2D(e.getX(), e.getY());
 			if(!this.isHidden()) {
 				if(this.getPosition().contains(point)) {
-					MouseHandler.cursor = MouseHandler.SELECT;
+					CursorHandler.cursor = CursorHandler.SELECT;
 				} else if(this.getPosition().contains(lastMouse)) {
-					MouseHandler.cursor = MouseHandler.NORMAL;
+					CursorHandler.cursor = CursorHandler.NORMAL;
 				}
 			}
 			lastMouse = point;

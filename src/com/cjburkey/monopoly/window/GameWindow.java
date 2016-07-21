@@ -1,6 +1,7 @@
 package com.cjburkey.monopoly.window;
 
 import com.cjburkey.monopoly.Monopoly;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -34,6 +35,10 @@ public class GameWindow {
 		
 		this.getStage().show();
 		Monopoly.log("Displayed GameWindow.");
+
+		this.getStage().setFullScreenExitHint("");
+		this.getStage().setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+		this.getStage().setFullScreen(true);
 		
 		this.getStage().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, e -> {
 			e.consume();

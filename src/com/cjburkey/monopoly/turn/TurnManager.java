@@ -83,6 +83,7 @@ public class TurnManager {
 				nextId = currentId + 1;
 			}
 			getCurrentPlayer().tickTurn();
+			//GameStateManager.mainGame.showMoneyScreen("Send money", 100, getCurrentPlayer(), players.get(nextId));
 			currentPlayer = players.get(nextId);
 			return currentPlayer;
 		}

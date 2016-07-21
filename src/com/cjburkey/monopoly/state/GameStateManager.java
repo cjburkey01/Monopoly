@@ -13,8 +13,8 @@ public class GameStateManager {
 	private static final List<GameState> states = new ArrayList<GameState>();
 	private GameState currentState = null;
 	
-	public static GameState mainMenu;
-	public static GameState mainGame;
+	public static GameStateMainMenu mainMenu;
+	public static GameStateMainGame mainGame;
 	
 	public void init() {
 		mainMenu = new GameStateMainMenu();

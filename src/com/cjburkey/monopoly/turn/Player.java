@@ -2,7 +2,7 @@ package com.cjburkey.monopoly.turn;
 
 import com.cjburkey.monopoly.Monopoly;
 import com.cjburkey.monopoly.img.TextureManager;
-import com.cjburkey.monopoly.money.PlayerBill;
+import com.cjburkey.monopoly.money.PlayerMoney;
 import com.cjburkey.monopoly.object.GameObjectInst;
 import com.cjburkey.monopoly.object.objects.GameObjectBoardSlot;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 public class Player {
 	
 	private String name;
-	private PlayerBill[] money;
+	private PlayerMoney money;
 	private GameObjectInst inst;
 	private Image avatar;
 	private int inJail = 0;
@@ -25,7 +25,7 @@ public class Player {
 	public Player(String name, GameObjectInst inst) {
 		this.name = name;
 		this.inst = inst;
-		money = PlayerBill.getDefaultStartingBills();
+		this.money = PlayerMoney.getDefault();
 		
 		int boyGirlMan = Maths.randomRange(0, 2);
 		if(boyGirlMan == 0) {
@@ -55,24 +55,26 @@ public class Player {
 	}
 	
 	public void setName(String name) { this.name = name; }
-	public void putInJail() { this.inJail = 4; }
+	public void putInJail() { this.place = 10; this.inJail = 4; }
 	public void tickTurn() { turn ++; }
 	public void moveForward(int amt) {
-		int total = place + amt;
-		if(total < (GameObjectGameBoard.numOfTiles - 1) * 4) {
-			place = total;
-		} else {
-			int overflow = total - ((int) ((GameObjectGameBoard.numOfTiles - 1) * 4 - 1)) - 1;
-			money[5].amount += 2;
-			rounds ++;
-			place = overflow;
-		}
-		
-		GameObjectInst s = GameObjectBoardSlot.getInstFromId(place);
-		if(s != null) {
-			inst.moveToPos(s.getPos());
-		} else {
-			Monopoly.log(place);
+		if(!this.getInJail()) {
+			int total = place + amt;
+			if(total < (GameObjectGameBoard.numOfTiles - 1) * 4) {
+				place = total;
+			} else {
+				int overflow = total - ((int) ((GameObjectGameBoard.numOfTiles - 1) * 4 - 1)) - 1;
+				this.money.addAmountToBill(100, 2);
+				rounds ++;
+				place = overflow;
+			}
+			
+			GameObjectInst s = GameObjectBoardSlot.getInstFromId(place);
+			if(s != null) {
+				inst.moveToPos(s.getPos());
+			} else {
+				Monopoly.log(place);
+			}
 		}
 	}
 	
@@ -82,33 +84,19 @@ public class Player {
 	public int getTurnsLeftInJail() { return this.inJail; }
 	public int getTimesAroundBoard() { return rounds; }
 	public int getTurnNumber() { return turn; }
-	public PlayerBill getAmountOfBill(int worth) { return this.money[PlayerBill.worthToId(this.money, worth)]; }
-	public PlayerBill getAmountOfBillFromId(int id) { return this.money[id]; }
 	public boolean getInJail() { return getTurnsLeftInJail() > 0; }
+	public PlayerMoney getMoney() { return this.money; }
 	
 	public int getTotalMoney() {
-		return PlayerBill.totalAmount(money);
+		return this.money.totalMoney();
 	}
 	
 	public boolean takeBills(int worth, int numberToTake, boolean simulate) {
-		int id = PlayerBill.worthToId(money, worth);
-		if(id >= 0) {
-			int amt = money[id].amount - numberToTake;
-			if(amt >= 0) {
-				if(!simulate) money[id].amount = amt;
-				return true;
-			}
-		}
-		return false;
+		return this.money.takeAmountOfBill(worth, numberToTake, simulate);
 	}
 	
-	public boolean addBills(int worth, int numberToAdd, boolean simulate) {
-		int id = PlayerBill.worthToId(money, worth);
-		if(id >= 0) {
-			if(!simulate) money[id].amount += numberToAdd;
-			return true;
-		}
-		return false;
+	public void addBills(int worth, int numberToAdd) {
+		this.money.addAmountToBill(worth, numberToAdd);
 	}
 	
 }

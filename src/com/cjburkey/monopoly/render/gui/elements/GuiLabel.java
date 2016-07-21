@@ -1,5 +1,6 @@
 package com.cjburkey.monopoly.render.gui.elements;
 
+import com.cjburkey.monopoly.Monopoly;
 import com.cjburkey.monopoly.render.gui.GuiElement;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
@@ -32,6 +33,11 @@ public class GuiLabel extends GuiElement {
 		this.color = color;
 		this.center = center;
 		this.vpos = vpos;
+	}
+	
+	public void calcSize() {
+		this.setPosition(new Rectangle2D(this.getPosition().getMinX(), this.getPosition().getMinY(), Monopoly.widthOfText(this.text, this.font),
+				Monopoly.heightOfText(this.text, this.font)));
 	}
 	
 	public void render(GraphicsContext gc) {

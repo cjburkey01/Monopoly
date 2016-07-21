@@ -1,9 +1,10 @@
 package com.cjburkey.monopoly.object.objects;
 
+import com.cjburkey.monopoly.Monopoly;
+import com.cjburkey.monopoly.building.BuildType;
 import com.cjburkey.monopoly.building.Property;
 import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.GameObjectInst;
-import com.sun.javafx.tk.Toolkit;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -33,7 +34,18 @@ public class GameObjectBoardSlot extends GameObject {
 		
 		gc.setFont(Font.font(75));
 		if(p != null) {
-			while(width(p.build.name, gc.getFont()) > GameObjectGameBoard.pixelPerTile - 5) {
+			if(p.build.type.equals(BuildType.BLUE)) gc.setFill(Color.rgb(0, 0, 255, 0.5d));
+			else if(p.build.type.equals(BuildType.BROWN)) gc.setFill(Color.rgb(139, 69, 19, 0.5d));
+			else if(p.build.type.equals(BuildType.GREEN)) gc.setFill(Color.rgb(0, 255, 0, 0.5d));
+			else if(p.build.type.equals(BuildType.LBLUE)) gc.setFill(Color.rgb(0, 0, 125, 0.5d));
+			else if(p.build.type.equals(BuildType.ORANGE)) gc.setFill(Color.rgb(255, 69, 0, 0.5d));
+			else if(p.build.type.equals(BuildType.PURPLE)) gc.setFill(Color.rgb(255, 0, 255, 0.5d));
+			else if(p.build.type.equals(BuildType.RED)) gc.setFill(Color.rgb(255, 0, 0, 0.5d));
+			else if(p.build.type.equals(BuildType.YELLOW)) gc.setFill(Color.rgb(255, 255, 0, 0.5d));
+			else gc.setFill(Color.TRANSPARENT);
+			
+			gc.fillRect(inst.getPos().getX(), inst.getPos().getY(), this.getSize().getX(), this.getSize().getY());
+			while(Monopoly.widthOfText(p.build.name, gc.getFont()) > GameObjectGameBoard.pixelPerTile - 5) {
 				gc.setFont(Font.font(gc.getFont().getSize() - 1));
 			}
 		}
@@ -42,10 +54,6 @@ public class GameObjectBoardSlot extends GameObject {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextBaseline(VPos.CENTER);
 		gc.fillText((p != null) ? p.build.name : id + "", inst.getPos().getX() + this.getSize().getX() / 2, inst.getPos().getY() + this.getSize().getY() / 2);
-	}
-	
-	private static final float width(String text, Font font) {
-		return Toolkit.getToolkit().getFontLoader().computeStringWidth(text, font);
 	}
 	
 	public static final GameObjectInst getInstFromId(int id) {

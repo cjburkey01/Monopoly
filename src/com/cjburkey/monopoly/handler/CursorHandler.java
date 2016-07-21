@@ -5,7 +5,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 
-public enum MouseHandler {
+public enum CursorHandler {
 	
 	NORMAL	(false, TextureManager.imgCurNormal),
 	MOVE	(true, TextureManager.imgCurMove),
@@ -15,21 +15,21 @@ public enum MouseHandler {
 	private boolean center;
 	private Point2D point = Point2D.ZERO;
 	Image img;
-	MouseHandler(boolean center, Image img) {
+	CursorHandler(boolean center, Image img) {
 		this.center = center;
 		this.img = img;
 	}
-	MouseHandler(Point2D point, Image img) {
+	CursorHandler(Point2D point, Image img) {
 		this.point = point;
 		this.img = img;
 	}
 	
-	public static final ImageCursor getCursor(MouseHandler handler) {
+	public static final ImageCursor getCursor(CursorHandler handler) {
 		Point2D point = new Point2D(handler.img.getWidth() / 2, handler.img.getHeight() / 2);
 		if(!handler.center) point = handler.point;
 		return new ImageCursor(handler.img, point.getX(), point.getY());
 	}
 	
-	public static MouseHandler cursor = NORMAL;
+	public static CursorHandler cursor = NORMAL;
 	
 }

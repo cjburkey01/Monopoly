@@ -41,7 +41,19 @@ public enum Building {
 	
 	// Utility Properties
 	Electric_Company("Electric Company", 150, 75),
-	Water_Works("Water Works", 150, 75);
+	Water_Works("Water Works", 150, 75),
+	
+	// Other
+	Community_Chest("Community Chest", BuildType.NO_CHARGE),
+	Chance("Chance", BuildType.NO_CHARGE),
+	Jail("Jail", BuildType.NO_CHARGE),
+	Free_Parking("Free Parking", BuildType.NO_CHARGE),
+	Goto_Jail("Go To Jail", BuildType.NO_CHARGE),
+	Go("Go", BuildType.NO_CHARGE),
+	
+	// Tax
+	Income_Tax("Income Tax", BuildType.NO_CHARGE),
+	Luxury_Tax("Luxury Tax", BuildType.NO_CHARGE);
 	
 	// Variables:
 	// Global
@@ -102,6 +114,12 @@ public enum Building {
 		this.type = BuildType.STATION;
 		this.cost = cost;
 		this.mortgage = mortgage;
+	}
+	
+	// Other
+	Building(String name, BuildType type) {
+		this.name = name;
+		this.type = type;
 	}
 	
 }

@@ -1,6 +1,5 @@
 package com.cjburkey.monopoly.object.objects;
 
-import com.cjburkey.monopoly.money.PlayerBill;
 import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.GameObjectInst;
 import javafx.geometry.Point2D;
@@ -21,12 +20,11 @@ public class GameObjectBill extends GameObject {
 		gc.setStroke(Color.BLACK);
 		gc.strokeRect(inst.getPos().getX(), inst.getPos().getY(), this.getSize().getX(), this.getSize().getY());
 		
-		Object data = inst.getData("gameObjectBill-bill");
-		if(data != null && data instanceof PlayerBill) {
-			PlayerBill bill = (PlayerBill) data;
-			
-			int billWorth = bill.worth;
-			int billAmount = bill.amount;
+		Object wdata = inst.getData("gameObjectBill-worth");
+		Object adata = inst.getData("gameObjectBill-amount");
+		if(wdata != null && wdata instanceof Integer && adata != null && adata instanceof Integer) {
+			int billWorth = (Integer) wdata;
+			int billAmount = (Integer) adata;
 			
 			gc.setTextAlign(TextAlignment.CENTER);
 			gc.setTextBaseline(VPos.TOP);
