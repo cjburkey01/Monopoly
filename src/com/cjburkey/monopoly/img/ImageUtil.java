@@ -1,4 +1,4 @@
-package com.cjburkey.monopoly.util;
+package com.cjburkey.monopoly.img;
 
 import java.io.InputStream;
 import com.cjburkey.monopoly.Monopoly;
@@ -13,6 +13,7 @@ public class ImageUtil {
 			if(stream != null) {
 				Image img;
 				if(size.equals(Point2D.ZERO)) img = new Image(stream); else img = new Image(stream, size.getX(), size.getY(), true, smooth);
+				Monopoly.log("Successfully loaded image: " + path);
 				return img;
 			} else {
 				Monopoly.log("Image not found: " + path);

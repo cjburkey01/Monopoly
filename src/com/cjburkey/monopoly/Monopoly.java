@@ -19,7 +19,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
- * Pre-patch 15
+ * Pre-patch 16
  * @author CJ Burkey
  */
 public class Monopoly extends Application {

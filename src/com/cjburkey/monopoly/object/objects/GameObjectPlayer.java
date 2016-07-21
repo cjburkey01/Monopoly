@@ -1,10 +1,10 @@
 package com.cjburkey.monopoly.object.objects;
 
-import com.cjburkey.monopoly.img.TextureManager;
 import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -32,8 +32,13 @@ public class GameObjectPlayer extends GameObject {
 			gc.fillRect(inst.getPos().getX() + 16, inst.getPos().getY() + 16, GameObjectGameBoard.pixelPerTile - 32, GameObjectGameBoard.pixelPerTile - 32);
 		}
 		
-		gc.drawImage(TextureManager.imgIconPerson, inst.getPos().getX() + 16, inst.getPos().getY() + 16,
-				GameObjectGameBoard.pixelPerTile - 32, GameObjectGameBoard.pixelPerTile - 32);
+		Object d = inst.getData("playerAvatar");
+		if(d != null && d instanceof Image) {
+			Image avatar = (Image) d;
+			gc.drawImage(avatar, inst.getPos().getX() + 16, inst.getPos().getY() + 16, GameObjectGameBoard.pixelPerTile - 32,
+					GameObjectGameBoard.pixelPerTile - 32);
+			
+		}
 	}
 	
 	public void tick(ObjectInstance inst) {  }

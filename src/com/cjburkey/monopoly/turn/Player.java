@@ -1,10 +1,12 @@
 package com.cjburkey.monopoly.turn;
 
 import com.cjburkey.monopoly.Monopoly;
+import com.cjburkey.monopoly.img.TextureManager;
 import com.cjburkey.monopoly.money.PlayerBill;
 import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
 import com.cjburkey.monopoly.util.Maths;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Player {
@@ -12,6 +14,7 @@ public class Player {
 	private String name;
 	private PlayerBill[] money;
 	private ObjectInstance inst;
+	private Image avatar;
 	private int inJail = 0;
 	private int turn = 0;
 	private int place = 0;
@@ -23,7 +26,19 @@ public class Player {
 		this.inst = inst;
 		money = PlayerBill.getDefaultStartingBills();
 		
+		int boyGirlMan = Maths.randomRange(0, 2);
+		if(boyGirlMan == 0) {
+			this.avatar = TextureManager.avatarBoy[Maths.randomRange(0, TextureManager.avatarBoy.length - 1)];
+		} else if(boyGirlMan == 1) {
+			this.avatar = TextureManager.avatarGirl[Maths.randomRange(0, TextureManager.avatarGirl.length - 1)];
+		} else if(boyGirlMan == 2) {
+			this.avatar = TextureManager.avatarMan[Maths.randomRange(0, TextureManager.avatarMan.length - 1)];
+		} else {
+			this.avatar = TextureManager.unknown;
+		}
+		
 		this.inst.setData("playerColor", Color.rgb(Maths.randomRange(0, 255), Maths.randomRange(0, 255), Maths.randomRange(0, 255), 0.4d));
+		this.inst.setData("playerAvatar", this.avatar);
 	}
 	
 	public void resetDoubles() {
