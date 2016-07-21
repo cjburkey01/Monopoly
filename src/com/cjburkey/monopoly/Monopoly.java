@@ -19,7 +19,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
- * Pre-patch 16
+ * Pre-patch 17
  * @author CJ Burkey
  */
 public class Monopoly extends Application {
@@ -86,7 +86,7 @@ public class Monopoly extends Application {
 	public void start(Stage s) {
 		try {
 			final Rectangle2D size = Screen.getPrimary().getVisualBounds();
-			init(s, size.getWidth() / 1.1, size.getHeight() / 1.1);
+			init(s, size.getWidth() / 1, size.getHeight() / 1);
 			
 			try {
 				getLogger().lineBreak();
@@ -123,19 +123,20 @@ public class Monopoly extends Application {
 	}
 	
 	public static final void genericError(Throwable t) {
-		getLogger().log("\t--[ BEGIN ERROR REPORT ]--", true);
-		getLogger().log("\t\tAn error occurred.", true);
-		getLogger().log("\t\tTaht no güd..", true);
-		getLogger().log("\t\tMain Report: '" + t.getMessage() + "'", true);
-		getLogger().log("\t\tCheck for this error on the issues page(https://github.com/cjburkey01/Monopoly/issues)", true);
-		getLogger().log("\t\tIf it doesn't exist, please submit it.", true);
-		getLogger().log("\t--[ END ERROR REPORT ]--", true);
-		getLogger().log("\t--[ START DETAILED REPORT ]--", true);
+		System.err.println("\t--[ BEGIN ERROR REPORT ]--");
+		System.err.println("\t\tAn error occurred.");
+		System.err.println("\t\tTaht no güd..");
+		System.err.println("\t\tMain Report: '" + t.getMessage() + "'");
+		System.err.println("\t\tCheck for this error on the issues page(https://github.com/cjburkey01/Monopoly/issues)");
+		System.err.println("\t\tIf it doesn't exist, please submit it.");
+		System.err.println("\t--[ END ERROR REPORT ]--");
+		System.err.println("\t--[ START DETAILED REPORT ]--");
 		
 		for(StackTraceElement e : t.getStackTrace()) {
-			System.err.println("\tat: " + e.getClassName() + "." + e.getMethodName() + ":" + e.getLineNumber());
+			System.err.println("\t\tAT: '" + e.getClassName() + "' WITH METHOD: '" + e.getMethodName() + "' ON LINE: " + e.getLineNumber());
 		}
-		getLogger().log("\t--[ END DETAILED REPORT ]--", true);
+		
+		System.err.println("\t--[ END DETAILED REPORT ]--");
 		System.exit(-1);
 	}
 	

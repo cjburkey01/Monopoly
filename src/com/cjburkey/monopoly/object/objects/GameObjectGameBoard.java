@@ -1,7 +1,7 @@
 package com.cjburkey.monopoly.object.objects;
 
 import com.cjburkey.monopoly.object.GameObject;
-import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.GameObjectInst;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,11 +19,11 @@ public class GameObjectGameBoard extends GameObject {
 		this.setSize(new Point2D(sizeWidth, sizeWidth));
 	}
 	
-	public void onAdd(ObjectInstance inst) {
+	public void onAdd(GameObjectInst inst) {
 		inst.setPos(new Point2D(-this.getSize().getX() / 2, -this.getSize().getY() / 2));
 	}
 	
-	public void render(GraphicsContext gc, ObjectInstance inst) {
+	public void render(GraphicsContext gc, GameObjectInst inst) {
 		Rectangle2D pos = new Rectangle2D(inst.getPos().getX(), inst.getPos().getY(), this.getSize().getX(), this.getSize().getY());
 		
 		gc.setStroke(Color.BLACK);

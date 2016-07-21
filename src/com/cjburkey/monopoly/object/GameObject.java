@@ -3,7 +3,6 @@ package com.cjburkey.monopoly.object;
 import java.util.ArrayList;
 import java.util.List;
 import com.cjburkey.monopoly.interfaces.IGameObject;
-import com.cjburkey.monopoly.object.instance.ObjectInstance;
 import com.cjburkey.monopoly.object.objects.GameObjectBill;
 import com.cjburkey.monopoly.object.objects.GameObjectBoardSlot;
 import com.cjburkey.monopoly.object.objects.GameObjectDice;
@@ -28,10 +27,10 @@ public class GameObject implements IGameObject {
 		size = new Point2D(32, 32);
 	}
 	
-	public void onAdd(ObjectInstance inst) {  }
-	public void tick(ObjectInstance inst) {  }
-	public void perSecond(int fps, ObjectInstance inst) {  }
-	public void render(GraphicsContext gc, ObjectInstance inst) {  }
+	public void onAdd(GameObjectInst inst) {  }
+	public void tick(GameObjectInst inst) {  }
+	public void perSecond(int fps, GameObjectInst inst) {  }
+	public void render(GraphicsContext gc, GameObjectInst inst) {  }
 	public void setSize(Point2D size) { this.size = size; }
 	public String getName() { return this.name; }
 	public Point2D getSize() { return this.size; }

@@ -3,7 +3,8 @@ package com.cjburkey.monopoly.turn;
 import com.cjburkey.monopoly.Monopoly;
 import com.cjburkey.monopoly.img.TextureManager;
 import com.cjburkey.monopoly.money.PlayerBill;
-import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.GameObjectInst;
+import com.cjburkey.monopoly.object.objects.GameObjectBoardSlot;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
 import com.cjburkey.monopoly.util.Maths;
 import javafx.scene.image.Image;
@@ -13,7 +14,7 @@ public class Player {
 	
 	private String name;
 	private PlayerBill[] money;
-	private ObjectInstance inst;
+	private GameObjectInst inst;
 	private Image avatar;
 	private int inJail = 0;
 	private int turn = 0;
@@ -21,7 +22,7 @@ public class Player {
 	private int rounds = 0;
 	private int ds = 0;
 	
-	public Player(String name, ObjectInstance inst) {
+	public Player(String name, GameObjectInst inst) {
 		this.name = name;
 		this.inst = inst;
 		money = PlayerBill.getDefaultStartingBills();
@@ -67,7 +68,7 @@ public class Player {
 			place = overflow;
 		}
 		
-		ObjectInstance s = ObjectInstance.getInstFromId(place);
+		GameObjectInst s = GameObjectBoardSlot.getInstFromId(place);
 		if(s != null) {
 			inst.moveToPos(s.getPos());
 		} else {
@@ -75,7 +76,7 @@ public class Player {
 		}
 	}
 	
-	public ObjectInstance getInst() { return this.inst; }
+	public GameObjectInst getInst() { return this.inst; }
 	
 	public String getName() { return name; }
 	public int getTurnsLeftInJail() { return this.inJail; }

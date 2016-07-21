@@ -3,7 +3,7 @@ package com.cjburkey.monopoly.turn;
 import java.util.ArrayList;
 import java.util.List;
 import com.cjburkey.monopoly.object.GameObject;
-import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.GameObjectInst;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
 import com.cjburkey.monopoly.state.GameStateManager;
 import com.cjburkey.monopoly.state.states.GameStateMainGame;
@@ -14,9 +14,9 @@ public class TurnManager {
 	
 	private final List<Player> players = new ArrayList<Player>();
 	private Player currentPlayer;
-	private ObjectInstance[] dice = new ObjectInstance[2];
+	private GameObjectInst[] dice = new GameObjectInst[2];
 	
-	public ObjectInstance[] bills = new ObjectInstance[7];
+	public GameObjectInst[] bills = new GameObjectInst[7];
 	public final void addPlayer(Player p) { players.add(p); }
 	public final void removePlayer(Player p) { players.remove(p); }
 	public final void removePlayer(int p) { players.remove(p); }
@@ -29,7 +29,7 @@ public class TurnManager {
 	
 	private final void initBills() {
 		for(int i = 0; i < bills.length; i ++) {
-			bills[i] = ObjectInstance.createInstance(GameObject.gameObjectBill,
+			bills[i] = GameObjectInst.createInstance(GameObject.gameObjectBill,
 					new Point2D((i * GameObject.gameObjectBill.getSize().getX()) - (GameObjectGameBoard.sizeWidth / 2), GameObjectGameBoard.sizeWidth / 2 + 16));
 		}
 	}
@@ -47,10 +47,10 @@ public class TurnManager {
 	private final void initDice() {
 		double padding = 16;
 		
-		dice[0] = ObjectInstance.createInstance(GameObject.gameObjectDice,
+		dice[0] = GameObjectInst.createInstance(GameObject.gameObjectDice,
 				new Point2D(-GameObjectGameBoard.sizeWidth / 2 - (GameObject.gameObjectDice.getSize().getX() + padding),
 						-GameObjectGameBoard.sizeWidth / 2));
-		dice[1] = ObjectInstance.createInstance(GameObject.gameObjectDice,
+		dice[1] = GameObjectInst.createInstance(GameObject.gameObjectDice,
 				new Point2D(dice[0].getPos().getX(), dice[0].getPos().getY() + dice[0].parent.getSize().getX() + padding));
 	}
 	

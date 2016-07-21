@@ -20,12 +20,7 @@ public class GameStateMainMenu extends GameState {
 	
 	public void tick() {  }
 	public void perSecond(int fps) {  }
-	public void render(GraphicsContext gc) {
-		//Canvas c = Monopoly.getWindow().getScene().getGameCanvas();
-		
-		//gc.setFill(Color.BLACK);
-		//gc.fillRect(-c.getWidth() / 2, -c.getWidth() / 2, c.getWidth(), c.getWidth());
-	}
+	public void render(GraphicsContext gc) {  }
 	
 	public void enterState(GameState previous) {
 		handler = new GuiHandler(this);
@@ -55,7 +50,7 @@ public class GameStateMainMenu extends GameState {
 		Monopoly.log("Cleared gui.");
 		GuiHandler.removeHandler(handler);
 		handler = null;
-		Monopoly.log("Disabled GUI handler.");
+		Monopoly.log("Disabled and removed GUI handler.");
 	}
 	
 }

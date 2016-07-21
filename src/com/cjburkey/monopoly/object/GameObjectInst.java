@@ -1,8 +1,7 @@
-package com.cjburkey.monopoly.object.instance;
+package com.cjburkey.monopoly.object;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.cjburkey.monopoly.object.GameObject;
 import com.cjburkey.monopoly.util.Data;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -12,7 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-public class ObjectInstance {
+public class GameObjectInst {
 	
 	public GameObject parent;
 	private Point2D position;
@@ -22,7 +21,7 @@ public class ObjectInstance {
 	
 	private final List<Data> data = new ArrayList<Data>();
 	
-	public ObjectInstance(GameObject parent) {
+	public GameObjectInst(GameObject parent) {
 		this.parent = parent;
 		this.position = new Point2D(0, 0);
 	}
@@ -92,31 +91,10 @@ public class ObjectInstance {
 		parent.render(gc, this);
 	}
 	
-	public static final ObjectInstance getInstFromId(int id) {
-		for(ObjectInstance inst : objInstances) {
-			Object data = inst.getData("gameObjectBoardSlot-ID");
-			if(data != null) {
-				if(data instanceof Integer) {
-					int did = (int) data;
-					if(did == id) {
-						return inst;
-					}
-				} else if(data instanceof Double) {
-					double tmp = (double) data;
-					int did = (int) tmp;
-					if(did == id) {
-						return inst;
-					}
-				}
-			}
-		}
-		return null;
-	}
+	public static final List<GameObjectInst> objInstances = new ArrayList<GameObjectInst>();
 	
-	public static final List<ObjectInstance> objInstances = new ArrayList<ObjectInstance>();
-	
-	public static final ObjectInstance createInstance(GameObject obj, Point2D pos) {
-		ObjectInstance inst = new ObjectInstance(obj);
+	public static final GameObjectInst createInstance(GameObject obj, Point2D pos) {
+		GameObjectInst inst = new GameObjectInst(obj);
 		inst.position = pos;
 		objInstances.add(inst);
 		inst.onAdd();

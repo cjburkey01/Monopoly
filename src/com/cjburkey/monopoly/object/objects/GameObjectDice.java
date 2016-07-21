@@ -2,7 +2,7 @@ package com.cjburkey.monopoly.object.objects;
 
 import com.cjburkey.monopoly.img.TextureManager;
 import com.cjburkey.monopoly.object.GameObject;
-import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.GameObjectInst;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -13,7 +13,7 @@ public class GameObjectDice extends GameObject {
 		this.setSize(new Point2D(GameObjectGameBoard.pixelPerTile * 2, GameObjectGameBoard.pixelPerTile * 2));
 	}
 	
-	public void render(GraphicsContext gc, ObjectInstance inst) {
+	public void render(GraphicsContext gc, GameObjectInst inst) {
 		Object data = inst.getData("gameObjectDice-shown");
 		int shown = -1;
 		if(data instanceof Integer) {

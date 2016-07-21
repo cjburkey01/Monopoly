@@ -1,7 +1,7 @@
 package com.cjburkey.monopoly.object.objects;
 
 import com.cjburkey.monopoly.object.GameObject;
-import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.GameObjectInst;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -15,7 +15,7 @@ public class GameObjectPlayer extends GameObject {
 		this.setSize(new Point2D(GameObjectGameBoard.pixelPerTile, GameObjectGameBoard.pixelPerTile));
 	}
 	
-	public void render(GraphicsContext gc, ObjectInstance inst) {
+	public void render(GraphicsContext gc, GameObjectInst inst) {
 		Object data = inst.getData("currentPlayer");
 		if(data != null && data instanceof Boolean) {
 			boolean current = (boolean) data;
@@ -41,6 +41,6 @@ public class GameObjectPlayer extends GameObject {
 		}
 	}
 	
-	public void tick(ObjectInstance inst) {  }
+	public void tick(GameObjectInst inst) {  }
 	
 }

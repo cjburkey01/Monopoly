@@ -2,7 +2,7 @@ package com.cjburkey.monopoly.object.objects;
 
 import com.cjburkey.monopoly.money.PlayerBill;
 import com.cjburkey.monopoly.object.GameObject;
-import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.GameObjectInst;
 import javafx.geometry.Point2D;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,7 +17,7 @@ public class GameObjectBill extends GameObject {
 		this.setSize(new Point2D(GameObjectGameBoard.sizeWidth / 7, GameObjectGameBoard.sizeWidth / 3.5));
 	}
 	
-	public void render(GraphicsContext gc, ObjectInstance inst) {
+	public void render(GraphicsContext gc, GameObjectInst inst) {
 		gc.setStroke(Color.BLACK);
 		gc.strokeRect(inst.getPos().getX(), inst.getPos().getY(), this.getSize().getX(), this.getSize().getY());
 		

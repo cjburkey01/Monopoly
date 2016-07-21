@@ -1,9 +1,11 @@
 package com.cjburkey.monopoly.state.states;
 
 import com.cjburkey.monopoly.Monopoly;
+import com.cjburkey.monopoly.building.Property;
 import com.cjburkey.monopoly.handler.MouseHandler;
 import com.cjburkey.monopoly.object.GameObject;
-import com.cjburkey.monopoly.object.instance.ObjectInstance;
+import com.cjburkey.monopoly.object.GameObjectInst;
+import com.cjburkey.monopoly.object.objects.GameObjectBoardSlot;
 import com.cjburkey.monopoly.object.objects.GameObjectGameBoard;
 import com.cjburkey.monopoly.render.gui.GuiHandler;
 import com.cjburkey.monopoly.render.gui.elements.GuiButton;
@@ -55,7 +57,7 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	public void tick() {
-		for(ObjectInstance inst : ObjectInstance.objInstances) {
+		for(GameObjectInst inst : GameObjectInst.objInstances) {
 			inst.tick();
 		}
 		
@@ -65,7 +67,7 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	public void perSecond(int fps) {
-		for(ObjectInstance inst : ObjectInstance.objInstances) {
+		for(GameObjectInst inst : GameObjectInst.objInstances) {
 			inst.perSecond(fps);
 		}
 	}
@@ -96,7 +98,7 @@ public class GameStateMainGame extends GameState {
 		gc.scale(zoom, zoom);
 		gc.translate(offset.getX(), offset.getY());
 		
-		for(ObjectInstance inst : ObjectInstance.objInstances) {
+		for(GameObjectInst inst : GameObjectInst.objInstances) {
 			gc.save();
 			inst.render(gc);
 			gc.restore();
@@ -166,13 +168,13 @@ public class GameStateMainGame extends GameState {
 	
 	private void setupGame(int players) {
 		for(int i = 1; i < GameObjectGameBoard.numOfTiles; i ++) {
-			ObjectInstance inst1 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot, new Point2D(-GameObject.gameObjectGameBoard.getSize().getX() / 2,
+			GameObjectInst inst1 = GameObjectInst.createInstance(GameObject.gameObjectBoardSlot, new Point2D(-GameObject.gameObjectGameBoard.getSize().getX() / 2,
 					-GameObjectGameBoard.pixelPerTile * (i + 1) + GameObject.gameObjectGameBoard.getSize().getY() / 2));
-			ObjectInstance inst2 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
+			GameObjectInst inst2 = GameObjectInst.createInstance(GameObject.gameObjectBoardSlot,
 					new Point2D(GameObjectGameBoard.pixelPerTile * i - GameObject.gameObjectGameBoard.getSize().getX() / 2, -GameObject.gameObjectGameBoard.getSize().getY() / 2));
-			ObjectInstance inst3 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
+			GameObjectInst inst3 = GameObjectInst.createInstance(GameObject.gameObjectBoardSlot,
 					new Point2D(GameObject.gameObjectGameBoard.getSize().getX() / 2 - GameObjectGameBoard.pixelPerTile, GameObjectGameBoard.pixelPerTile * i - GameObject.gameObjectGameBoard.getSize().getY() / 2));
-			ObjectInstance inst4 = ObjectInstance.createInstance(GameObject.gameObjectBoardSlot,
+			GameObjectInst inst4 = GameObjectInst.createInstance(GameObject.gameObjectBoardSlot,
 					new Point2D(-GameObjectGameBoard.pixelPerTile * (i + 1) + GameObject.gameObjectGameBoard.getSize().getX() / 2, GameObject.gameObjectGameBoard.getSize().getY() / 2 - GameObjectGameBoard.pixelPerTile));
 			
 			inst1.setData("gameObjectBoardSlot-ID", i);
@@ -181,10 +183,12 @@ public class GameStateMainGame extends GameState {
 			inst4.setData("gameObjectBoardSlot-ID", ((i + (3 * (GameObjectGameBoard.numOfTiles - 1))) == (4 * (GameObjectGameBoard.numOfTiles - 1))) ? (int) 0 : (i + (3 * (GameObjectGameBoard.numOfTiles - 1))));
 		}
 		
+		Property.loadProperties();
+		
 		for(int i = 0; i < players; i ++) {
-			Object fromInst = ObjectInstance.getInstFromId(0);
+			Object fromInst = GameObjectBoardSlot.getInstFromId(0);
 			if(fromInst != null) {
-				Player p = new Player("Player " + (i + 1), ObjectInstance.createInstance(GameObject.gameObjectPlayer, ((ObjectInstance) fromInst).getPos()));
+				Player p = new Player("Player " + (i + 1), GameObjectInst.createInstance(GameObject.gameObjectPlayer, ((GameObjectInst) fromInst).getPos()));
 				turns.addPlayer(p);
 			}
 		}
@@ -193,7 +197,7 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	public void enterState(GameState previous) {
-		ObjectInstance.createInstance(GameObject.gameObjectGameBoard, Point2D.ZERO);
+		GameObjectInst.createInstance(GameObject.gameObjectGameBoard, Point2D.ZERO);
 		turns = new TurnManager();
 		
 		Monopoly.getWindow().getScene().getGameCanvas().addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
@@ -299,7 +303,7 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	public void exitState(GameState next) {
-		ObjectInstance.objInstances.clear();
+		GameObjectInst.objInstances.clear();
 		Monopoly.log("Cleared instances");
 		GameObject.gameObjs.clear();
 		Monopoly.log("Cleared objects.");
