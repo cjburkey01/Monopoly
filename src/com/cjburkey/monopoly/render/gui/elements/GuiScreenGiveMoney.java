@@ -86,13 +86,17 @@ public class GuiScreenGiveMoney extends GuiScreen {
 	}
 	
 	private void send() {
-		
+		this.to.getMoney().add(this.money);
 	}
 	
 	public void render(GraphicsContext gc) {
 		super.render(gc);
 		this.moneyLeft = this.moneyOwed - this.money.totalMoney();
 		this.amount.setText("$" + this.moneyOwed + " owed to " + this.to.getName() + ".  $" + this.moneyLeft + " left.");
+		
+		if(this.moneyLeft <= 0) {
+			this.send();
+		}
 	}
 	
 }

@@ -44,6 +44,8 @@ public class GameStateMainGame extends GameState {
 	private GuiLabel currentPlayer;
 	private GuiButton roll;
 	private GuiButton next;
+	private boolean lastGui = false;
+	private boolean rolled = false;
 	
 	public int cooldown = 75;
 	
@@ -132,6 +134,26 @@ public class GameStateMainGame extends GameState {
 				p.getInst().setData("currentPlayer", true);
 			} else {
 				p.getInst().setData("currentPlayer", false);
+			}
+		}
+		
+		if(Monopoly.guiScreenOpen != this.lastGui && this.exit != null) {
+			if(Monopoly.guiScreenOpen) {
+				this.lastGui = true;
+				this.exit.hide();
+			} else {
+				this.lastGui = false;
+				this.exit.show();
+			}
+		}
+		
+		if(this.roll != null && this.next != null) {
+			this.next.hide();
+			this.roll.hide();
+			if(this.rolled && !Monopoly.guiScreenOpen) {
+				this.next.show();
+			} else if(!Monopoly.guiScreenOpen) {
+				this.roll.show();
 			}
 		}
 	}
@@ -245,8 +267,9 @@ public class GameStateMainGame extends GameState {
 	}
 	
 	GuiScreen gotoMenuScreen;
+	GuiButton exit;
 	private void initInGame() {
-		GuiButton exit = new GuiButton(new Point2D(2, 2), () -> { gotoMenuScreen.show(); }, "Main Menu", 15);
+		exit = new GuiButton(new Point2D(2, 2), () -> { gotoMenuScreen.show(); }, "Main Menu", 15);
 		
 		roll = new GuiButton(new Point2D(2, 2 + exit.getPosition().getMinY() + exit.getPosition().getHeight()), () -> {
 			if(cooldown <= 0) {
@@ -255,8 +278,7 @@ public class GameStateMainGame extends GameState {
 				turns.getCurrentPlayer().moveForward(total);
 				
 				if(dice[0] != dice[1]) {
-					next.show();
-					roll.hide();
+					this.rolled = true;
 					turns.getCurrentPlayer().resetDoubles();
 				} else {
 					Monopoly.log("DOUBLES!");
@@ -267,9 +289,7 @@ public class GameStateMainGame extends GameState {
 		
 		next = new GuiButton(new Point2D(2, 2 + roll.getPosition().getMinY() + roll.getPosition().getHeight()), () -> {
 			if(cooldown <= 0) {
-				roll.show();
-				next.hide();
-				
+				this.rolled = false;
 				turns.nextTurn();
 			}
 		}, "Next Turn", 15);
